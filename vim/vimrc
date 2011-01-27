@@ -1,3 +1,17 @@
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
+set hlsearch
+set hidden
+
+set nocompatible
+syntax on
+filetype plugin indent on
+"helptags ~/.vim/doc
+
+let mapleader=','
+map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+
