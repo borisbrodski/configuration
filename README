@@ -1,0 +1,21 @@
+## Get configuration:
+
+cd ~
+git clone https://borisbrodski@github.com/borisbrodski/configuration.git .configuration
+ln -s ~/.configuration/vim/vimrc ~/.vimrc
+ln -s ~/.configuration/vim/gvimrc ~/.gvimrc
+ln -s ~/.configuration/vim ~/.vim
+cd .configuration
+git submodule init
+git submodule update
+
+## Add following to the .bashrc or .bash_profile
+TODO
+
+
+## Install new vim plugin:
+
+git submodule add <REPO-URL> vim/bundle/<NAME>
+git add .
+git commit -m "Install <NAME> bundle as a submodule."
+
