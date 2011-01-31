@@ -3,6 +3,7 @@ call pathogen#helptags()
 
 set hlsearch
 set hidden
+set mouse=a
 
 set nocompatible
 syntax on
@@ -18,4 +19,8 @@ map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 nmap <silent> <c-p> :TlistToggle<CR>
+nmap <silent> <c-c> :FufCoverageFile<CR>
+nmap <silent> <c-t> :FufTag<CR>
+nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
+
 imap <c-f> => 
