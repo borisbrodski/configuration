@@ -193,11 +193,20 @@ snippet <-
 	${2}
 snippet <=
 	<%= ${1} %>${2}
+snippet unless
+	<%- unless ${1} -%>
+	  ${2}
+	<%- end -%>
 snippet if
 	<%- if ${1} -%>
-
+	  ${2}
 	<%- end -%>
 snippet each
 	<%- ${1}.each do |${2}| -%>
 	  ${3}
 	<%- end -%>
+snippet <
+	<${1:name}>${2}</$1>${3}
+snippet t
+	<${1:name}>${2}</$1>${3}
+
