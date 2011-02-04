@@ -52,3 +52,12 @@ nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
 imap <c-f> => 
 
 "nmap \ll :silent! call Tex_RunLaTeX()<CR>
+
+autocmd FileType tex setlocal shiftwidth=2 tabstop=2
+autocmd FileType latex setlocal shiftwidth=2 tabstop=2
+
+hi SpellBad term=reverse ctermbg=2
+hi SpellCap term=reverse ctermbg=2
+hi SpellRare term=reverse ctermbg=2
+hi SpellLocal term=reverse ctermbg=2
+
