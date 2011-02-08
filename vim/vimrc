@@ -3,6 +3,8 @@
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
+runtime macros/matchit.vim
+
 set showmatch " Show matching brackets.
 set smartcase		" Do smart case matching
 set hlsearch
