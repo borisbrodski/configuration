@@ -12,4 +12,4 @@
 	url = http://github.com/kana/vim-textobj-user.git
 [submodule "vim/bundle/textobj-rubyblock"]
 	path = vim/bundle/textobj-rubyblock
-	url = https://github.com/nelstrom/vim-textobj-rubyblock.git
+	url = http://github.com/nelstrom/vim-textobj-rubyblock.git
