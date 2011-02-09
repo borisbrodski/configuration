@@ -16,6 +16,13 @@ set mousemodel=popup
 set keymodel=startsel,stopsel
 set selection=exclusive
 
+" Fix stopsel behavior in Visual Mode
+vnoremap <Left> h
+vnoremap <Right> l
+vnoremap <Up> k
+vnoremap <Down> j
+
+
 " --------------- RAILS
 set nocompatible
 syntax on
