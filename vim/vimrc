@@ -73,6 +73,7 @@ nmap <c-a> ggVG
 
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2
 autocmd FileType latex setlocal shiftwidth=2 tabstop=2
+autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 
 hi SpellBad term=reverse ctermbg=2
 hi SpellCap term=reverse ctermbg=2
