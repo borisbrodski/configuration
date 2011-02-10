@@ -21,8 +21,8 @@ vnoremap <Left> h
 vnoremap <Right> l
 vnoremap <Up> k
 vnoremap <Down> j
-"vnoremap <Home> 0
-"vnoremap <End> $
+vnoremap <Home> 0
+vnoremap <End> $
 
 
 " --------------- RAILS
