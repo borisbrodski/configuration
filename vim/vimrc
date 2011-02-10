@@ -85,6 +85,18 @@ hi SpellCap term=reverse ctermbg=2
 hi SpellRare term=reverse ctermbg=2
 hi SpellLocal term=reverse ctermbg=2
 
+" INVISIBLES
+" Shortcut to rapidly toggle `set list`
+nmap <leader>i :set list!<CR>
+
+" Use the same symbols as TextMate for tabstops and EOLs
+set listchars=tab:▸\ ,eol:¬
+
+"Invisible character colors
+highlight NonText guifg=#dadae9
+highlight SpecialKey guifg=#dadae9
+
+
 function! Paste(mode)
   if a:mode == "v"
     normal gv
