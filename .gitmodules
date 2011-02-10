@@ -13,3 +13,6 @@
 [submodule "vim/bundle/textobj-rubyblock"]
 	path = vim/bundle/textobj-rubyblock
 	url = http://github.com/nelstrom/vim-textobj-rubyblock.git
+[submodule "vim/bundle/unimpaired"]
+	path = vim/bundle/unimpaired
+	url = http://github.com/tpope/vim-unimpaired.git

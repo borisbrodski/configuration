@@ -74,8 +74,6 @@ nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
 imap <c-f> => 
 nmap <c-a> ggVG
 
-"nmap \ll :silent! call Tex_RunLaTeX()<CR>
-
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
@@ -114,3 +112,22 @@ vnoremap <C-C> "+y
 inoremap <C-V> <C-O>:call Paste("i")<CR>
 " nnoremap <C-V> "+gPl
 " vnoremap <C-V> :<C-U>call Paste("v")<CR>
+
+" Visually select the text that was last edited/pasted
+nmap gV `[v`]
+
+" Bubble single lines
+nmap <A-Up> [e
+nmap <A-Down> ]e
+
+" Bubble multiple lines
+vmap <A-Up> [egv
+vmap <A-Down> ]egv
+
+" Copy current line
+nmap <C-A-Up> "-yyp
+nmap <C-A-Down> <C-A-Up>
+
+" Copy current lines
+vmap <C-A-Up> <Esc>'<V'>"-y'>"-p
+vmap <C-A-Down> <Esc>'<V'>"-y"-P
