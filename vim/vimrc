@@ -61,6 +61,9 @@ map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 
+map <C-Up> <C-Y>
+map <C-Down> <C-E>
+
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 nmap <silent> <c-p> :TlistToggle<CR>
