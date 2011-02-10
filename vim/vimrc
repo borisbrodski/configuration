@@ -76,8 +76,8 @@ nmap <c-a> ggVG
 
 "nmap \ll :silent! call Tex_RunLaTeX()<CR>
 
-autocmd FileType tex setlocal shiftwidth=2 tabstop=2
-autocmd FileType latex setlocal shiftwidth=2 tabstop=2
+autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 
 hi SpellBad term=reverse ctermbg=2
