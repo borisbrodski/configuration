@@ -54,12 +54,12 @@ set grepprg=grep\ -nH\ $*
 let g:tex_flavor='latex'
 
 
-
 let mapleader=','
 map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
+map <leader>t <C-]>
 
 map <C-Up> <C-Y>
 map <C-Down> <C-E>
@@ -77,6 +77,7 @@ nmap <c-a> ggVG
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd FileType java setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 
 hi SpellBad term=reverse ctermbg=2
 hi SpellCap term=reverse ctermbg=2
