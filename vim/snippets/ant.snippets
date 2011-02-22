@@ -1,0 +1,15 @@
+snippet target
+	<target name="${1:name}" depends="${2:othertarget}" description="${3:text}" >
+	    <!-- Body -->
+
+	</target>
+snippet copy
+	<copy file="${1:from}" tofile="${2:to}"/>
+snippet import
+	<import file="${1:build.xml}">
+snippet </
+	<${1:name}/>${2}
+snippet <
+	<${1:name}>${2}</$1>${3}
+snippet t
+	<${1:name}>${2}</$1>${3}
