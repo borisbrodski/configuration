@@ -4,7 +4,6 @@ call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 runtime macros/matchit.vim
 
-
 if has('win32')
 	source $HOME/vimfiles/bundle/snipmate/plugin/snipMate.vim
 	"source $HOME/vimfiles/bundle/snipmate/autoload/snipMate.vim
@@ -12,12 +11,9 @@ if has('win32')
 	call GetSnippets("C:/Users/brodski.boris/vimfiles/snippets/", "ant")
 endif
 
-
-
-
-set showmatch    " Show matching brackets.
-set ignorecase   " Search ignoring case
-set smartcase    " Do smart case matching
+set showmatch " Show matching brackets.
+set ignorecase " Search ignoring case
+set smartcase " Do smart case matching
 set hlsearch
 set incsearch
 set hidden
@@ -86,13 +82,14 @@ nmap <silent> <C-PageDown> :bprevious<CR>
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 nmap <silent> <c-p> :TlistToggle<CR>
-nmap <silent> <c-c> :FufCoverageFile<CR>
-nmap <silent> <c-t> :FufTag<CR>
+"nmap <silent> <c-c> :FufCoverageFile<CR>
+"nmap <silent> <c-t> :FufTag<CR>
 nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
 
 imap <c-f> => 
 nmap <c-a> ggVG
 
+autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
@@ -206,3 +203,40 @@ function! PutRegFilledToRange() range
 endfunction
 vmap _f :call PutRegFilledToRange()<CR>
 
+function! FillInc() range
+  let l:fill = ''
+  let l:lineIndex = 0
+  let l:linesNeeded = a:lastline - a:firstline + 1
+  if getreg() =~ "[0-9]\+"
+    let l:count = 0 + getreg()
+  else
+    let l:count = 1
+  endif
+  while l:lineIndex < l:linesNeeded
+    let l:fill = l:fill . l:count . "\n"
+    let l:count = l:count + 1
+    let l:lineIndex = l:lineIndex + 1
+  endwhile
+
+"  echo l:fill
+  normal gv
+  " This probably does not make much sense in any mode
+  " other than block modes, but we will try to cope.
+  if mode() == "\<C-V>" || mode() == "\<C-S>"
+    let l:newMode = "\<C-V>"
+  elseif mode() == 'v' || mode() == 's'
+    let l:newMode = 'v'
+  else
+    let l:newMode = 'V'
+  endif
+  let l:origReg = getreg('')
+  let l:origRegType = getregtype('')
+  try
+    call setreg('', l:fill, l:newMode)
+    execute 'normal ' . v:count1 . 'p'
+  finally
+    call setreg('', l:origReg, l:origRegType)
+  endtry
+endfunction
+
+vmap _c :call FillInc()<CR>
