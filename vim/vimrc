@@ -86,7 +86,8 @@ nmap <silent> <c-p> :TlistToggle<CR>
 "nmap <silent> <c-t> :FufTag<CR>
 nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
 
-imap <c-f> => 
+autocmd FileType rb imap <buffer> <c-f> => 
+autocmd FileType erb imap <buffer> <c-f> => 
 nmap <c-a> ggVG
 
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
@@ -240,3 +241,8 @@ function! FillInc() range
 endfunction
 
 vmap _c :call FillInc()<CR>
+
+if filereadable($HOME . "/.vimrc_local")
+  source $HOME/.vimrc_local
+endif
+
