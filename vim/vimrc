@@ -23,6 +23,11 @@ set mousemodel=popup
 set keymodel=startsel ",stopsel
 set selection=old
 set backspace=indent,eol,start
+set whichwrap+=<,>,[,]
+
+" Fix back space in normal mode
+map <BS> X
+
 
 " Fix stopsel behavior in Visual Mode
 "vnoremap <Left> h
@@ -150,20 +155,31 @@ nmap gV `[v`]
 
 " Bubble single lines
 nmap <A-Up> [e
+nmap <A-k> [e
 nmap <A-Down> ]e
+nmap <A-j> ]e
 
 " Bubble multiple lines
 vmap <A-Up> [egv
+vmap <A-k> [egv
 vmap <A-Down> ]egv
+vmap <A-j> ]egv
 
 " Copy current line
 nmap <C-A-Up> "-yyp
+nmap <C-A-k> "-yyp
 nmap <C-A-Down> <C-A-Up>
+nmap <C-A-j> <C-A-Up>
 
 " Copy current lines
 vmap <C-A-Up> <Esc>'<V'>"-y'>"-pgv
+vmap <C-A-k> <Esc>'<V'>"-y'>"-pgv
 vmap <C-A-Down> <Esc>'<V'>"-y"-Pgv
+vmap <C-A-j> <Esc>'<V'>"-y"-Pgv
 
+" Select a 'word' surrounding by spaces
+vmap <SPACE> iW
+"vmap <SPACE> :<BS><BS><BS><BS><BS>let b:old=@/<CR>gvh/ \\|$/e-1<CR>Ol? \\|^?e+1<CR>O:<BS><BS><BS><BS><BS>let @/=b:old<CR>gv
 
 function! PutRegFilledToRange() range
   let l:fill = ''
@@ -242,7 +258,51 @@ endfunction
 
 vmap _c :call FillInc()<CR>
 
+" Copy matches of the last search to a register (default is the clipboard).
+" Accepts a range (default is whole file).
+" 'CopyMatches'   copy matches to clipboard (each match has \n added).
+" 'CopyMatches x' copy matches to register x (clears register first).
+" 'CopyMatches X' append matches to register x.
+" We skip empty hits to ensure patterns using '\ze' don't loop forever.
+command! -range=% -register CopyMatches call s:CopyMatches(<line1>, <line2>, '<reg>')
+function! s:CopyMatches(line1, line2, reg)
+  let hits = []
+  for line in range(a:line1, a:line2)
+    let txt = getline(line)
+    let idx = match(txt, @/)
+    while idx >= 0
+      let end = matchend(txt, @/, idx)
+      if end > idx
+	call add(hits, strpart(txt, idx, end-idx))
+      else
+	let end += 1
+      endif
+      if @/[0] == '^'
+        break  " to avoid false hits
+      endif
+      let idx = match(txt, @/, end)
+    endwhile
+  endfor
+  if len(hits) > 0
+    let reg = empty(a:reg) ? '+' : a:reg
+    execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+  else
+    echo 'No hits'
+  endif
+endfunction
+
+" Use 0"+y0 to clear the clipboard, then
+"    :g/pattern/call CopyMultiMatches()
+" to copy all multiline hits (just the matching text).
+" This is for when the match extends over multiple lines.
+" Only the first match from each line is found.
+" BUG: When searching for "^function.*\_s*let" the '.*' stops at the end
+" of a line, but it greedily skips "\n" in the following (we copy too much).
+function! CopyMultiMatches()
+  let text = join(getline(".", "$"), "\n") . "\n"
+  let @+ .= matchstr(text, @/) . "\n"
+endfunction
+
 if filereadable($HOME . "/.vimrc_local")
   source $HOME/.vimrc_local
 endif
-
