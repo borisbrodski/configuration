@@ -38,9 +38,13 @@ map <BS> X
 "vnoremap <End> $
 
 nnoremap <S-M-Left> <C-W>h
+nnoremap <S-M-l> <C-W>h
 nnoremap <S-M-Right> <C-W>l
+nnoremap <S-M-h> <C-W>l
 nnoremap <S-M-Up> <C-W>k
+nnoremap <S-M-k> <C-W>k
 nnoremap <S-M-Down> <C-W>j
+nnoremap <S-M-j> <C-W>j
 
 " --------------- RAILS
 set nocompatible
@@ -258,51 +262,88 @@ endfunction
 
 vmap _c :call FillInc()<CR>
 
-" Copy matches of the last search to a register (default is the clipboard).
-" Accepts a range (default is whole file).
-" 'CopyMatches'   copy matches to clipboard (each match has \n added).
-" 'CopyMatches x' copy matches to register x (clears register first).
-" 'CopyMatches X' append matches to register x.
-" We skip empty hits to ensure patterns using '\ze' don't loop forever.
-command! -range=% -register CopyMatches call s:CopyMatches(<line1>, <line2>, '<reg>')
-function! s:CopyMatches(line1, line2, reg)
-  let hits = []
-  for line in range(a:line1, a:line2)
-    let txt = getline(line)
-    let idx = match(txt, @/)
-    while idx >= 0
-      let end = matchend(txt, @/, idx)
-      if end > idx
-	call add(hits, strpart(txt, idx, end-idx))
-      else
-	let end += 1
-      endif
-      if @/[0] == '^'
-        break  " to avoid false hits
-      endif
-      let idx = match(txt, @/, end)
-    endwhile
-  endfor
-  if len(hits) > 0
-    let reg = empty(a:reg) ? '+' : a:reg
-    execute 'let @'.reg.' = join(hits, "\n") . "\n"'
-  else
-    echo 'No hits'
-  endif
+"""" Copy matches of the last search to a register (default is the clipboard).
+"""" Accepts a range (default is whole file).
+"""" 'CopyMatches'   copy matches to clipboard (each match has \n added).
+"""" 'CopyMatches x' copy matches to register x (clears register first).
+"""" 'CopyMatches X' append matches to register x.
+"""" We skip empty hits to ensure patterns using '\ze' don't loop forever.
+"""command! -range=% -register CopyMatches call s:CopyMatches(<line1>, <line2>, '<reg>')
+"""function! s:CopyMatches(line1, line2, reg)
+"""  let hits = []
+"""  for line in range(a:line1, a:line2)
+"""    let txt = getline(line)
+"""    let idx = match(txt, @/)
+"""    while idx >= 0
+"""      let end = matchend(txt, @/, idx)
+"""      if end > idx
+"""	call add(hits, strpart(txt, idx, end-idx))
+"""      else
+"""	let end += 1
+"""      endif
+"""      if @/[0] == '^'
+"""        break  " to avoid false hits
+"""      endif
+"""      let idx = match(txt, @/, end)
+"""    endwhile
+"""  endfor
+"""  if len(hits) > 0
+"""    let reg = empty(a:reg) ? '+' : a:reg
+"""    execute 'let @'.reg.' = join(hits, "\n") . "\n"'
+"""  else
+"""    echo 'No hits'
+"""  endif
+"""endfunction
+"""
+"""" Use 0"+y0 to clear the clipboard, then
+""""    :g/pattern/call CopyMultiMatches()
+"""" to copy all multiline hits (just the matching text).
+"""" This is for when the match extends over multiple lines.
+"""" Only the first match from each line is found.
+"""" BUG: When searching for "^function.*\_s*let" the '.*' stops at the end
+"""" of a line, but it greedily skips "\n" in the following (we copy too much).
+"""function! CopyMultiMatches()
+"""  let text = join(getline(".", "$"), "\n") . "\n"
+"""  let @+ .= matchstr(text, @/) . "\n"
+"""endfunction
+
+
+" Remove all text except what matches the current search result
+" The opposite of :%s///g (which clears all instances of the current search.
+" Note: Clobbers the c register
+function! ClearAllButMatches()
+    let old = @c
+    let @c=""
+    %s//\=setreg('C', submatch(0), 'l')/g
+    %d _
+    put c
+    0d _
+    let @c = old
 endfunction
 
-" Use 0"+y0 to clear the clipboard, then
-"    :g/pattern/call CopyMultiMatches()
-" to copy all multiline hits (just the matching text).
-" This is for when the match extends over multiple lines.
-" Only the first match from each line is found.
-" BUG: When searching for "^function.*\_s*let" the '.*' stops at the end
-" of a line, but it greedily skips "\n" in the following (we copy too much).
-function! CopyMultiMatches()
-  let text = join(getline(".", "$"), "\n") . "\n"
-  let @+ .= matchstr(text, @/) . "\n"
+function! AddToRegister(group)
+  call setreg(v:register, getreg() . submatch(a:group), 'l')
+  return submatch(0)
 endfunction
+
+function! YankAllMatched(...) range
+  if a:0 == 0
+    let l:group=0
+  else
+    let l:group=a:1
+  endif
+  call setreg(v:register, '', 'c')
+  execute a:firstline . ',' . a:lastline . 's//\=AddToRegister(' . l:group . ')/g'
+endfunction
+
+" Copy all matched text to the specified register. Use as an optional
+" argument a regex matching group.
+command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<args>)
+
+
+
 
 if filereadable($HOME . "/.vimrc_local")
   source $HOME/.vimrc_local
 endif
+
