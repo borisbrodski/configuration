@@ -224,6 +224,12 @@ function! PutRegFilledToRange() range
 endfunction
 vmap _f :call PutRegFilledToRange()<CR>
 
+function! PutRegBeforeOrAfter(move) range
+  execute "normal gv" . a:move . getreg(v:register) . "\<c-c>"
+endfunction
+vmap _I :call PutRegBeforeOrAfter('I')<CR>
+vmap _A :call PutRegBeforeOrAfter('A')<CR>
+
 function! FillInc() range
   let l:fill = ''
   let l:lineIndex = 0
