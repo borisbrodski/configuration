@@ -24,10 +24,56 @@ set keymodel=startsel ",stopsel
 set selection=old
 set backspace=indent,eol,start
 set whichwrap+=<,>,[,]
+set cpoptions+=$
+set showcmd
+set ruler
+set laststatus=2
+set statusline=%F%m%r%h%w\ [%{&ff},%{&fileencoding}][%Y][\%03.3b,0x\%02.2B][%l/%L,%v]%p%%
+set tag+=../tags
+" --------------------------------------------------------------------------------
+" COLORS
+" --------------------------------------------------------------------------------
+colorscheme torte
+
+" Mode Indication -Prominent!
+function! InsertStatuslineColor(mode)
+  if a:mode == 'i'
+    hi statusline guibg=#cc6666
+    " set cursorcolumn
+  elseif a:mode == 'r'
+    hi statusline guibg=#33aaee
+  else
+    hi statusline guibg=#ee44bb
+  endif
+endfunction
+
+function! InsertLeaveActions()
+  hi statusline guibg=#ffffff
+  set nocursorcolumn
+endfunction
+
+au InsertEnter * call InsertStatuslineColor(v:insertmode)
+au InsertLeave * call InsertLeaveActions()
+
+" to handle exiting insert mode via a control-C
+inoremap <c-c> <c-o>:call InsertLeaveActions()<cr><c-c>
+hi statusline guibg=green
+
+" --------------------------------------------------------------------------------
 
 " Fix back space in normal mode
-map <BS> X
+nmap <BS> X
+nmap <f3> <c-]>
+nmap <c-w><f3> <c-w><c-]>
+nmap <c-w>m <c-w>\| <c-w>_
+nmap <space> <c-f>
+nmap <silent> <c-w>c :bnext<cr>:bd #<cr>
+nmap <silent> <C-Tab> :b #<cr>
+nmap <silent> <C-PageUp> :bnext<CR>
+nmap <silent> <C-PageDown> :bprevious<CR>
 
+
+nmap <silent> <c-t> :execute "normal! \<c-a>"<cr>
 
 " Fix stopsel behavior in Visual Mode
 "vnoremap <Left> h
@@ -85,9 +131,6 @@ map <leader>t <C-]>
 map <C-Up> <C-Y>
 map <C-Down> <C-E>
 
-nmap <silent> <C-PageUp> :bnext<CR>
-nmap <silent> <C-PageDown> :bprevious<CR>
-
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
 nmap <silent> <c-p> :TlistToggle<CR>
@@ -104,6 +147,7 @@ autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType java setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd FileType jsp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType xml setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType ant setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType ant setlocal iskeyword+=.
@@ -127,8 +171,10 @@ nmap <leader>i :set list!<CR>
 set listchars=tab:▸\ ,eol:¬
 
 "Invisible character colors
-highlight NonText guifg=#dadae9
-highlight SpecialKey guifg=#dadae9
+highlight NonText guifg=#333333
+highlight SpecialKey guifg=#333333
+" highlight NonText guifg=#dadae9
+" highlight SpecialKey guifg=#dadae9
 
 vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
@@ -153,6 +199,7 @@ vnoremap <C-V> "+p
 inoremap <C-V> <C-O>:call Paste("i")<CR>
 " nnoremap <C-V> "+gPl
 " vnoremap <C-V> :<C-U>call Paste("v")<CR>
+vmap P "0p
 
 " Visually select the text that was last edited/pasted
 nmap gV `[v`]
@@ -347,7 +394,11 @@ endfunction
 command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<args>)
 
 
+" --------------------------------------------------------------------------------
+" JAVA
+" --------------------------------------------------------------------------------
 
+nmap ga _f lvt;F h"tyf;hvT "ny][Opublic "tpa get"npT lllvUA() {return pa;}public void setpT lllvUA("tpa "npa) {this."npa = "npa;}
 
 if filereadable($HOME . "/.vimrc_local")
   source $HOME/.vimrc_local
