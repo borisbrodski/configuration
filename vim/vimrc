@@ -400,6 +400,46 @@ command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<ar
 
 nmap ga _f lvt;F h"tyf;hvT "ny][Opublic "tpa get"npT lllvUA() {return pa;}public void setpT lllvUA("tpa "npa) {this."npa = "npa;}
 
+
+function! GetBufferList()
+    return filter(range(1,bufnr('$')), 'buflisted(v:val)')
+endfunction
+
+function! GetMatchingBuffers(pattern)
+    return filter(GetBufferList(), 'substitute(bufname(v:val), "\\\\", "/", "g") =~ a:pattern')
+endfunction
+
+function! ProcessMatchingBuffers(op, opdescr, pattern)
+    let l:p = substitute(a:pattern, '\\', '/', 'g')
+    let l:p = '\V\^' . l:p . '\$'
+    let l:p = substitute(l:p, '\*', '\\.\\*', 'g')
+    let l:p = substitute(l:p, '?', '\\.', 'g')
+    echo "'" . l:p . "'"
+    let l:matchList = GetMatchingBuffers(l:p)
+
+    let l:count = len(l:matchList)
+    if l:count < 1
+        echo 'No buffers found matching pattern ' . a:pattern
+        return
+    endif
+
+    if l:count == 1
+        let l:suffix = ''
+    else
+        let l:suffix = 's'
+    endif
+
+    exec a:op . ' ' . join(l:matchList, ' ')
+
+    echo a:opdescr . ' ' . l:count . ' buffer' . l:suffix . '.'
+endfunction
+
+command! -nargs=1 BW call ProcessMatchingBuffers('bw', 'Wiped', '<args>')
+command! -nargs=1 BD call ProcessMatchingBuffers('bd', 'deleted', '<args>')
+
+
+
+
 if filereadable($HOME . "/.vimrc_local")
   source $HOME/.vimrc_local
 endif
