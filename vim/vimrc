@@ -65,9 +65,9 @@ nmap <silent> <s-space> <c-b>
 imap <silent> <c-space> <esc>:execute "normal l"<cr>a
 imap <silent> <c-s-space> <esc>i
 nmap <silent> <c-w>c :bprevious<cr>:bd #<cr>
-nmap <silent> <C-Tab> :b #<cr>
-nmap <silent> <C-PageUp> :bnext<CR>
-nmap <silent> <C-PageDown> :bprevious<CR>
+nmap <silent> <C-PageDown> :bnext<CR>
+nmap <silent> <C-PageUp> :bprevious<CR>
+nnoremap <C-Tab> :BufExplorer<CR>
 nmap <m-o> m'o<esc>`'
 nmap <m-s-o> m'O<esc>`'
 

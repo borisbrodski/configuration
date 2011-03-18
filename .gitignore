@@ -2,3 +2,4 @@
 /vim/bundle/latex/ftplugin/latex-suite/bibtools.pyc
 /vim/bundle/latex/ftplugin/latex-suite/outline.pyc
 *.swp
+tags
