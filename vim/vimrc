@@ -67,7 +67,7 @@ imap <silent> <c-s-space> <esc>i
 nmap <silent> <c-w>c :bprevious<cr>:bd #<cr>
 nmap <silent> <C-PageDown> :bnext<CR>
 nmap <silent> <C-PageUp> :bprevious<CR>
-nnoremap <C-Tab> :BufExplorer<CR>
+nnoremap <C-Tab> :BufExplorer<CR>j
 nmap <m-o> m'o<esc>`'
 nmap <m-s-o> m'O<esc>`'
 
@@ -128,6 +128,7 @@ map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>t <C-]>
+map <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
 
 map <C-Up> <C-Y>
 map <C-Down> <C-E>
@@ -508,7 +509,8 @@ set foldcolumn=1
 set foldenable " Turn on folding
 set foldmarker={,} " Fold C style code (only use this as default
                     " if you use a high foldlevel)
-set foldmethod=marker " Fold on the marker
+"set foldmethod=marker " Fold on the marker
+set foldmethod=syntax " Fold on the marker
 set foldlevel=100 " Don't autofold anything (but I can still
                   " fold manually)
 set foldopen=block,hor,mark,percent,quickfix,tag " what movements
