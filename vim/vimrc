@@ -129,8 +129,9 @@ map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>t <C-]>
 map <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
+map <c-s-tab>    :CommandTBuffer<CR>
+map <c-t>      :CommandT<CR>
 
 " Comment out for java
 map <silent> <leader>cj :Exec "normal 0i//"<cr>
