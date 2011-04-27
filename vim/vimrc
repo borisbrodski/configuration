@@ -11,6 +11,8 @@ if has('win32')
 	call GetSnippets("C:/Users/brodski.boris/vimfiles/snippets/", "ant")
 endif
 
+set encoding=utf-8
+
 " --------------------------------------------------------------------------------
 " COLORS
 " --------------------------------------------------------------------------------
@@ -130,6 +132,16 @@ map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>t <C-]>
 map <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
 
+" Comment out for java
+map <silent> <leader>cj :Exec "normal 0i//"<cr>
+
+" Comment out for ruby
+map <silent> <leader>cr :Exec "normal 0i#"<cr>
+
+" Comment out for vim
+map <silent> <leader>cv :Exec 'normal 0i"'<cr>
+
+
 map <C-Up> <C-Y>
 map <C-Down> <C-E>
 
@@ -162,6 +174,7 @@ autocmd FileType jproperties setlocal shiftwidth=4 tabstop=4 softtabstop=4 expan
 autocmd FileType jproperties setlocal iskeyword+=.
 autocmd FileType jproperties setlocal iskeyword+=-
 autocmd FileType python setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
+autocmd FileType CUCUMBER setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
 autocmd FileType tex nmap  m'0i%<esc>`'
 autocmd FileType tex vmap  normal m'0i%<esc>`'
@@ -209,7 +222,7 @@ vnoremap <C-X> "+d
 vnoremap <C-C> "+y
 vnoremap <C-V> "+p
 "inoremap <C-V> <C-O>:call Paste("i")<CR>
-" nnoremap <C-V> "+gPl
+nnoremap <C-V> "+gPl
 " vnoremap <C-V> :<C-U>call Paste("v")<CR>
 vmap P "0p
 
@@ -453,6 +466,20 @@ command! -nargs=1 -bang -complete=buffer BD call ProcessMatchingBuffers('bd', 'd
 
 
 
+autocmd FileType CUCUMBER inoremap <silent> <Bar>     <Bar><Esc>:call <SID>align()<CR>a
+autocmd FileType CUCUMBER nmap <silent> <Bar>     :call <SID>align()<CR>a
+"autocmd FileType CUCUMBER inoremap <silent> <space>   <space><Esc>:call <SID>align()<CR>a
+ 
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
 
 nmap <silent> <F1> :cn<CR>
 nmap <silent> <S-F1> :cp<CR>
@@ -499,7 +526,7 @@ set nostartofline " leave my cursor where it was
 set scrolloff=5 " Keep 5 lines (top/bottom) for scope
 set showcmd " show the command being typed
 set sidescrolloff=5 " Keep 5 lines at the size
-set lazyredraw " do not redraw while running macros
+"set lazyredraw " do not redraw while running macros
 set wildchar=<Tab> wildmenu wildmode=full
 
 highlight Folded term=standout ctermfg=11 ctermbg=8 guifg=Cyan guibg=#222222

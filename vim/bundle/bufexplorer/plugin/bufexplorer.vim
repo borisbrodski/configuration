@@ -458,6 +458,7 @@ function! s:BEMapKeys()
 
   nnoremap <buffer> <silent> <C-Tab>       j
   nnoremap <buffer> <silent> <C-S-Tab>     k
+  nnoremap <buffer> <silent> <S-Tab>       k
   nnoremap <buffer> <silent> <Tab>         :call <SID>BESelectBuffer()<cr>
 
   for k in ["G", "n", "N", "L", "M", "H"]
