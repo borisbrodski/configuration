@@ -16,12 +16,15 @@ set encoding=utf-8
 " --------------------------------------------------------------------------------
 " COLORS
 " --------------------------------------------------------------------------------
-colorscheme torte
+" Coole Schemata
+"colorscheme torte
+colorscheme asu1dark
+"colorscheme borland
 
 " Mode Indication -Prominent!
 function! InsertStatuslineColor(mode)
   if a:mode == 'i'
-    hi statusline guibg=green
+    hi statusline guibg=blue
     " set cursorcolumn
   elseif a:mode == 'r'
     hi statusline guibg=red
@@ -31,7 +34,7 @@ function! InsertStatuslineColor(mode)
 endfunction
 
 function! InsertLeaveActions()
-  hi statusline guibg=#ffffff
+  hi statusline guibg=#336600
   set nocursorcolumn
 endfunction
 
@@ -77,6 +80,11 @@ imap ^ <esc>
 imap ° <c-r>='^'<cr>
 
 nmap <silent> <c-t> :execute "normal! \<c-a>"<cr>
+
+" Alt-Shift-R - Rename word under curser or search pattern
+nmap <m-s-r> :%s/\C\<<c-r>=expand("<cword>")<cr>\>/<c-r>=expand("<cword>")<cr>/g<left><left>
+vmap <m-s-r> :s/\C<c-r>=@/<cr>/<c-r>=substitute(@/,'\W*\(\w\+\).*', '\1', 'g')<cr>/g<left><left>
+
 
 " Fix stopsel behavior in Visual Mode
 "vnoremap <Left> h
@@ -532,7 +540,7 @@ set wildchar=<Tab> wildmenu wildmode=full
 
 highlight Folded term=standout ctermfg=11 ctermbg=8 guifg=Cyan guibg=#222222
 highlight FoldColumn term=standout ctermfg=11 ctermbg=8 guifg=Cyan guibg=#222222
-set foldcolumn=1
+set foldcolumn=3
 
 set foldenable " Turn on folding
 set foldmarker={,} " Fold C style code (only use this as default
