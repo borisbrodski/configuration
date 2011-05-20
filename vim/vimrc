@@ -156,11 +156,17 @@ map <C-Down> <C-E>
 
 map <C-k> <C-Y>
 map <C-j> <C-E>
-map <c-h> <plug>IMAP_JumpForward
+map <silent> <c-h> <Plug>CamelCaseMotion_b
+map <silent> <c-l> <Plug>CamelCaseMotion_w
+omap <silent> <c-h> <Plug>CamelCaseMotion_ib
+xmap <silent> <c-h> <Plug>CamelCaseMotion_ib
+omap <silent> <c-l> <Plug>CamelCaseMotion_iw
+xmap <silent> <c-l> <Plug>CamelCaseMotion_iw
+"map <c-h> <plug>IMAP_JumpForward
 
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
-nmap <silent> <c-l> :TlistOpen<CR>
+nmap <silent> <m-o> :TlistOpen<CR>
 "nmap <silent> <c-c> :FufCoverageFile<CR>
 "nmap <silent> <c-t> :FufTag<CR>
 nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
