@@ -169,6 +169,11 @@ autocmd FileType rb imap <buffer> <c-f> =>
 autocmd FileType erb imap <buffer> <c-f> => 
 nmap <c-a> ggVG
 
+let g:CommandTMaxFiles=50000
+let g:CommandTMaxDepth=30
+set wildignore+=*.class,*.jar,*.ear
+
+
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 "autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
