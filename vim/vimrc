@@ -11,7 +11,10 @@ if has('win32')
 	call GetSnippets("C:/Users/brodski.boris/vimfiles/snippets/", "ant")
 endif
 
-set encoding=utf-8
+" Start maximized
+au GUIEnter * simalt ~x
+
+"set encoding=utf-8
 
 " --------------------------------------------------------------------------------
 " COLORS
@@ -67,14 +70,17 @@ nmap <c-w><f3> <c-w><c-]>
 nmap <c-w>m <c-w>\| <c-w>_
 nmap <silent> <space> <c-f>
 nmap <silent> <s-space> <c-b>
+vmap <silent> <space> <c-f>
+vmap <silent> <s-space> <c-b>
+
 imap <silent> <c-space> <esc>:execute "normal l"<cr>a
 imap <silent> <c-s-space> <esc>i
 nmap <silent> <c-w>c :bprevious<cr>:bd #<cr>
 nmap <silent> <C-PageDown> :bnext<CR>
 nmap <silent> <C-PageUp> :bprevious<CR>
 nnoremap <C-Tab> :BufExplorer<CR>j
-nmap <m-o> m'o<esc>`'
-nmap <m-s-o> m'O<esc>`'
+nmap <silent> <m-o>   :let a=@" \| execute "normal! m'o" \| execute "normal! S" \| execute "normal! `'" \| let @"=a<CR>
+nmap <silent> <m-s-o> :let a=@" \| execute "normal! m'O" \| execute "normal! S" \| execute "normal! `'" \| let @"=a<CR>
 
 imap ^ <esc>
 imap ° <c-r>='^'<cr>
@@ -131,6 +137,10 @@ set grepprg=grep\ -nH\ $*
 " The following changes the default filetype back to 'tex':
 let g:tex_flavor='latex'
 
+" --------------- CommantT
+let g:CommandTMaxFiles=100000
+let g:CommandTMaxDepth=50
+set wildignore+=*.class,.git,*.jar,*.ear
 
 let mapleader=','
 map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -150,6 +160,11 @@ map <silent> <leader>cr :Exec "normal 0i#"<cr>
 " Comment out for vim
 map <silent> <leader>cv :Exec 'normal 0i"'<cr>
 
+" Source the vimrc file after saving it
+"if has("autocmd")
+"  autocmd bufwritepost .vimrc source $MYVIMRC
+"endif
+nmap <leader>vv :tabedit $MYVIMRC<CR>
 
 map <C-Up> <C-Y>
 map <C-Down> <C-E>
@@ -163,6 +178,7 @@ xmap <silent> <c-h> <Plug>CamelCaseMotion_ib
 omap <silent> <c-l> <Plug>CamelCaseMotion_iw
 xmap <silent> <c-l> <Plug>CamelCaseMotion_iw
 "map <c-h> <plug>IMAP_JumpForward
+nmap <silent> <m-7> :let @/=""<CR>
 
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
@@ -213,8 +229,10 @@ nmap <leader>i :set list!<CR>
 set listchars=tab:▸\ ,eol:¬
 
 "Invisible character colors
-highlight NonText guifg=#333333
-highlight SpecialKey guifg=#333333
+highlight NonText guifg=#444444
+highlight NonText guibg=#11001E
+highlight SpecialKey guifg=#444444
+highlight SpecialKey guibg=#11001E
 " highlight NonText guifg=#dadae9
 " highlight SpecialKey guifg=#dadae9
 
@@ -262,20 +280,20 @@ vmap <A-Down> ]egv
 vmap <A-j> ]egv
 
 " Copy current line
-nmap <C-A-Up> "-yyp
-nmap <C-A-k> "-yyp
-nmap <C-A-Down> <C-A-Up>
-nmap <C-A-j> <C-A-Up>
+nmap <silent> <C-A-Up> "-yyP
+nmap <silent> <C-A-Down> "-yyp
+nmap <silent> <C-A-k> <C-A-Up>
+nmap <silent> <S-A-k> <C-A-Up>
+nmap <silent> <C-A-j> <C-A-Down>
+nmap <silent> <S-A-j> <C-A-Down>
 
 " Copy current lines
-vmap <C-A-Up> <Esc>'<V'>"-y'>"-pgv
-vmap <C-A-k> <Esc>'<V'>"-y'>"-pgv
-vmap <C-A-Down> <Esc>'<V'>"-y"-Pgv
-vmap <C-A-j> <Esc>'<V'>"-y"-Pgv
-
-" Select a 'word' surrounding by spaces
-vmap <SPACE> iW
-"vmap <SPACE> :<BS><BS><BS><BS><BS>let b:old=@/<CR>gvh/ \\|$/e-1<CR>Ol? \\|^?e+1<CR>O:<BS><BS><BS><BS><BS>let @/=b:old<CR>gv
+vmap <silent> <C-A-Up> <Esc>'<V'>"-y'>"-pgv
+vmap <silent> <C-A-Down> <Esc>'<V'>"-y"-Pgv
+vmap <silent> <C-A-k> <C-A-Up>
+vmap <silent> <C-A-j> <C-A-Down>
+vmap <silent> <S-A-k> <C-A-Up>
+vmap <silent> <S-A-j> <C-A-Down>
 
 function! PutRegFilledToRange() range
   let l:fill = ''
@@ -562,7 +580,11 @@ set foldlevel=100 " Don't autofold anything (but I can still
                   " fold manually)
 set foldopen=block,hor,mark,percent,quickfix,tag " what movements
 set visualbell t_vb=
-                                                  " open folds
+
+" No menus and no toolbar
+"set guioptions-=m  
+set guioptions-=T
+
 function! SimpleFoldText() " {
     return getline(v:foldstart).' '
 endfunction " }
