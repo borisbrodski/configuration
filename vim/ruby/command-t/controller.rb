@@ -121,8 +121,8 @@ module CommandT
       @match_window.select_prev
     end
 
-    def clear
-      @prompt.clear!
+    def clear(init_text = '')
+      @prompt.clear!(init_text.nil? ? '' : init_text)
       list_matches
     end
 
@@ -161,7 +161,8 @@ module CommandT
       @focus            = @prompt
       @prompt.focus
       register_for_key_presses
-      clear # clears prompt and lists matches
+      # clears prompt and lists matches
+      clear(get_string("g:CommandTInitString"))
     end
 
     def set_up_max_height

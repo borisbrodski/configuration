@@ -40,9 +40,9 @@ module CommandT
     end
 
     # Clear any entered text.
-    def clear!
-      @abbrev = ''
-      @col    = 0
+    def clear!(init_text = '')
+      @abbrev = init_text
+      @col    = @abbrev.length
       redraw
     end
 

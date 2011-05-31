@@ -149,7 +149,8 @@ map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
 map <c-s-tab>    :CommandTBuffer<CR>
-map <c-t>      :CommandT<CR>
+map <c-t>      :let g:CommandTInitString='' \| CommandT<cr>
+map <m-t>      :let g:CommandTInitString=expand("<cword>") \| CommandT<cr>
 
 " Comment out for java
 map <silent> <leader>cj :Exec "normal 0i//"<cr>
@@ -190,11 +191,6 @@ nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
 autocmd FileType rb imap <buffer> <c-f> => 
 autocmd FileType erb imap <buffer> <c-f> => 
 nmap <c-a> ggVG
-
-let g:CommandTMaxFiles=50000
-let g:CommandTMaxDepth=30
-set wildignore+=*.class,*.jar,*.ear
-
 
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
