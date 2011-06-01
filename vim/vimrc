@@ -9,10 +9,10 @@ if has('win32')
 	"source $HOME/vimfiles/bundle/snipmate/autoload/snipMate.vim
 	call GetSnippets("C:/Users/brodski.boris/vimfiles/bundle/snipmate/snippets", "tex")
 	call GetSnippets("C:/Users/brodski.boris/vimfiles/snippets/", "ant")
+  " Start maximized
+  au GUIEnter * simalt ~x
 endif
 
-" Start maximized
-au GUIEnter * simalt ~x
 
 "set encoding=utf-8
 
