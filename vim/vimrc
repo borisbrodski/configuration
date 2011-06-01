@@ -147,7 +147,8 @@ map <leader>ew :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>es :sp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>ev :vsp <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>et :tabe <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
+nmap <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
+vmap <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
 map <c-s-tab>    :CommandTBuffer<CR>
 map <c-t>      :let g:CommandTInitString='' \| CommandT<cr>
 map <m-t>      :let g:CommandTInitString=expand("<cword>") \| CommandT<cr>
@@ -193,7 +194,13 @@ autocmd FileType erb imap <buffer> <c-f> =>
 nmap <c-a> ggVG
 
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+autocmd FileType tex nmap <buffer> <f-9> :w<cr>,ll,lv
+autocmd FileType tex nmap <buffer> <f-9> <esc><f2>
+autocmd FileType tex setlocal spelllang=de_20 spell
+autocmd FileType tex TTarget pdf
+
 "autocmd FileType latex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType cpp setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType java setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
@@ -276,16 +283,16 @@ vmap <A-Down> ]egv
 vmap <A-j> ]egv
 
 " Copy current line
-nmap <silent> <C-A-Up> "-yyP
-nmap <silent> <C-A-Down> "-yyp
+nmap <silent> <C-A-Up> :let g:linecopytmp=@"<cr>yyP:let @"=g:linecopytmp<cr>
+nmap <silent> <C-A-Down> :let g:linecopytmp=@"<cr>yyp:let @"=g:linecopytmp<cr>
 nmap <silent> <C-A-k> <C-A-Up>
 nmap <silent> <S-A-k> <C-A-Up>
 nmap <silent> <C-A-j> <C-A-Down>
 nmap <silent> <S-A-j> <C-A-Down>
 
 " Copy current lines
-vmap <silent> <C-A-Up> <Esc>'<V'>"-y'>"-pgv
-vmap <silent> <C-A-Down> <Esc>'<V'>"-y"-Pgv
+vmap <silent> <C-A-Up> <Esc>:let g:linecopytmp=@"<cr>'<V'>y'>p:let @"=g:linecopytmp<cr>gv
+vmap <silent> <C-A-Down> <Esc>:let g:linecopytmp=@"<cr>'<V'>"9y"9P:let @"=g:linecopytmp<cr>gv
 vmap <silent> <C-A-k> <C-A-Up>
 vmap <silent> <C-A-j> <C-A-Down>
 vmap <silent> <S-A-k> <C-A-Up>
