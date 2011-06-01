@@ -171,7 +171,7 @@ map <C-Up> <C-Y>
 map <C-Down> <C-E>
 
 map <C-k> <C-Y>
-map <C-j> <C-E>
+autocmd VimEnter * map <C-j> <C-E>
 map <silent> <c-h> <Plug>CamelCaseMotion_b
 map <silent> <c-l> <Plug>CamelCaseMotion_w
 omap <silent> <c-h> <Plug>CamelCaseMotion_ib
@@ -183,7 +183,7 @@ nmap <silent> <m-7> :let @/=""<CR>
 
 "Map ctrl+n to toggle NERDtree
 nmap <silent> <c-n> :NERDTreeToggle<CR>
-nmap <silent> <m-o> :TlistOpen<CR>
+nmap <silent> <c-m-o> :TlistOpen<CR>
 "nmap <silent> <c-c> :FufCoverageFile<CR>
 "nmap <silent> <c-t> :FufTag<CR>
 nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
