@@ -152,6 +152,7 @@ vmap <leader>ve :Exec substitute(getline('.'), '\r$', "", 'g')<cr>
 map <c-s-tab>    :CommandTBuffer<CR>
 map <c-t>      :let g:CommandTInitString='' \| CommandT<cr>
 map <m-t>      :let g:CommandTInitString=expand("<cword>") \| CommandT<cr>
+map +<m-t>      :let g:CommandTInitString=@+ \| CommandT<cr>
 
 " Comment out for java
 map <silent> <leader>cj :Exec "normal 0i//"<cr>
@@ -189,15 +190,22 @@ nmap <silent> <c-m-o> :TlistOpen<CR>
 "nmap <silent> <c-t> :FufTag<CR>
 nmap <silent> g<c-t> :FufTagWithCursorWord<CR>
 
-autocmd FileType rb imap <buffer> <c-f> => 
-autocmd FileType erb imap <buffer> <c-f> => 
+autocmd FileType rb    imap <buffer> <c-f> => 
+autocmd FileType erb   imap <buffer> <c-f> => 
+autocmd FileType ruby  imap <buffer> <c-f> => 
+autocmd FileType eruby imap <buffer> <c-f> => 
+autocmd FileType rb    setl iskeyword+=_
+autocmd FileType erb   setl iskeyword+=_
+autocmd FileType ruby  setl iskeyword+=_
+autocmd FileType eruby setl iskeyword+=_
+autocmd FileType css   setl iskeyword-=:
 nmap <c-a> ggVG
 
 autocmd FileType vim setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
 autocmd FileType tex setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
-autocmd FileType tex nmap <buffer> <f-9> :w<cr>,ll,lv
-autocmd FileType tex nmap <buffer> <f-9> <esc><f2>
+autocmd FileType tex nnoremap <buffer> <f8> :w \| execute "normal ,ll,lv"<cr>
+autocmd FileType tex inoremap <buffer> <f8> <esc><f8>
 autocmd FileType tex setlocal spelllang=de_20 spell
 autocmd FileType tex TTarget pdf
 
@@ -214,6 +222,7 @@ autocmd FileType jproperties setlocal iskeyword+=.
 autocmd FileType jproperties setlocal iskeyword+=-
 autocmd FileType python setlocal shiftwidth=4 tabstop=4 softtabstop=4 expandtab
 autocmd FileType CUCUMBER setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 
 autocmd FileType tex nmap  m'0i%<esc>`'
 autocmd FileType tex vmap  normal m'0i%<esc>`'
@@ -533,6 +542,7 @@ imap <F2> <ESC><F2>
 imap <S-F2> <ESC><S-F2>
 
 nnoremap <F9> :GundoToggle<CR>
+nnoremap <silent> <F12> :let @+=expand("%:t")
 
 function! MyExec(cmd)
   execute a:cmd
@@ -543,6 +553,7 @@ command! -nargs=1 -range Exec <line1>,<line2>call MyExec(<args>)
 " Yank from the cursor to the end of the line, to be consistent with C and D.
 nnoremap Y y$
 
+set winaltkeys=no
 set directory=~/.vim/tmp " directory to place swap files in
 set showmatch " Show matching brackets.
 set ignorecase " Search ignoring case
@@ -587,6 +598,7 @@ set visualbell t_vb=
 " No menus and no toolbar
 "set guioptions-=m  
 set guioptions-=T
+set textwidth=0
 
 function! SimpleFoldText() " {
     return getline(v:foldstart).' '
@@ -598,3 +610,8 @@ if filereadable($HOME . "/.vimrc_local")
   source $HOME/.vimrc_local
 endif
 
+
+map <F7> :execute '%s/<\//\r<\//g' \| execute '%s/>/>\r/g' \| execute 'g/^$/d' \| execute "normal G=gg"<cr>
+map <S-F7> :execute '%s/ *\_$\_. *//g'<cr>
+
+let g:localvimrc_sandbox=0
