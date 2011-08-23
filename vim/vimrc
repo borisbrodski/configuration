@@ -153,6 +153,8 @@ map <c-s-tab>    :CommandTBuffer<CR>
 map <c-t>      :let g:CommandTInitString='' \| CommandT<cr>
 map <m-t>      :let g:CommandTInitString=expand("<cword>") \| CommandT<cr>
 map +<m-t>      :let g:CommandTInitString=@+ \| CommandT<cr>
+map g<c-t>     <m-t>
+map g+<c-t>    :let g:CommandTInitString=@+ \| CommandT<cr>
 
 " Comment out for java
 map <silent> <leader>cj :Exec "normal 0i//"<cr>
@@ -227,6 +229,7 @@ autocmd FileType ruby setlocal shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 autocmd FileType tex nmap  m'0i%<esc>`'
 autocmd FileType tex vmap  normal m'0i%<esc>`'
 
+autocmd BufReadPost fugitive://* set bufhidden=delete
 
 hi SpellBad term=reverse ctermbg=2
 hi SpellCap term=reverse ctermbg=2
@@ -580,6 +583,7 @@ set showcmd " show the command being typed
 set sidescrolloff=5 " Keep 5 lines at the size
 "set lazyredraw " do not redraw while running macros
 set wildchar=<Tab> wildmenu wildmode=full
+set fileencodings+=utf-8,cp1252,latin1
 
 highlight Folded term=standout ctermfg=11 ctermbg=8 guifg=Cyan guibg=#222222
 highlight FoldColumn term=standout ctermfg=11 ctermbg=8 guifg=Cyan guibg=#222222
@@ -609,10 +613,6 @@ set foldtext=SimpleFoldText() " Custom fold text function
 if filereadable($HOME . "/.vimrc_local")
   source $HOME/.vimrc_local
 endif
-
-
-map <F7> :execute '%s/<\//\r<\//g' \| execute '%s/>/>\r/g' \| execute 'g/^$/d' \| execute "normal G=gg"<cr>
-map <S-F7> :execute '%s/ *\_$\_. *//g'<cr>
 
 let g:localvimrc_sandbox=0
 let g:localvimrc_ask=0
