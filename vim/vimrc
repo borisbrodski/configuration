@@ -615,3 +615,4 @@ map <F7> :execute '%s/<\//\r<\//g' \| execute '%s/>/>\r/g' \| execute 'g/^$/d' \
 map <S-F7> :execute '%s/ *\_$\_. *//g'<cr>
 
 let g:localvimrc_sandbox=0
+let g:localvimrc_ask=0
