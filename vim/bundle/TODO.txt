@@ -1,3 +1,6 @@
+add:
+- line object plugin
+
 try:
 - NERD commenter
 - ragtag-vim (highlight closing tag)

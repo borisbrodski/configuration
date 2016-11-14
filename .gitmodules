@@ -7,9 +7,6 @@
 [submodule "vim/bundle/vim-colors-solarized"]
 	path = vim/bundle/vim-colors-solarized
 	url = https://github.com/altercation/vim-colors-solarized
-[submodule "vim/bundle/argtextobj.vim"]
-	path = vim/bundle/argtextobj.vim
-	url = https://github.com/blueyed/argtextobj.vim.git
 [submodule "vim/bundle/autohotkey-ahk"]
 	path = vim/bundle/autohotkey-ahk
 	url = https://github.com/vim-scripts/autohotkey-ahk

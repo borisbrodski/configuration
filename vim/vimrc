@@ -1,5 +1,5 @@
 set langmenu=en_US.UTF-8
-language english
+language en_US.UTF-8
 
 execute pathogen#infect()
 Helptags
@@ -7,7 +7,9 @@ syntax enable
 set background=light
 if has('gui_running')
   colorscheme solarized
-  au GUIEnter * simalt ~x
+  if has('win32')
+    au GUIEnter * simalt ~x
+  endif
 endif
 filetype plugin indent on
 
@@ -16,8 +18,11 @@ filetype plugin indent on
 " :redir @a
 " :set gfn?
 " :redir END
-set guifont=Consolas:h11:cANSI
-
+if has('win32')
+  set guifont=Consolas:h11:cANSI
+else
+  set guifont=Monospace\ 11
+endif
 noremap <silent> <c-n> :NERDTreeToggle<cr>
 noremap <silent> <M-n> :NERDTreeFind<cr>
 
@@ -93,6 +98,19 @@ let g:ctrlp_custom_ignore = {
   \ 'link': 'some_bad_symbolic_links',
   \ }
 
+" incsearch.vim
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
+
+let g:incsearch#auto_nohlsearch = 1
+map n  <Plug>(incsearch-nohl-n)
+map N  <Plug>(incsearch-nohl-N)
+map *  <Plug>(incsearch-nohl-*)
+map #  <Plug>(incsearch-nohl-#)
+map g* <Plug>(incsearch-nohl-g*)
+map g# <Plug>(incsearch-nohl-g#)
+
 
 " --------------- auto cmds
 augroup XML
@@ -133,3 +151,6 @@ endfunction
 
 " Redmine table aligner
 command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|
+
+
+" vim: ts=2 sts=2 sw=2 expandtab
