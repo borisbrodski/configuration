@@ -1,0 +1,135 @@
+set langmenu=en_US.UTF-8
+language english
+
+execute pathogen#infect()
+Helptags
+syntax enable
+set background=light
+if has('gui_running')
+  colorscheme solarized
+  au GUIEnter * simalt ~x
+endif
+filetype plugin indent on
+
+
+" Set GUI font
+" :redir @a
+" :set gfn?
+" :redir END
+set guifont=Consolas:h11:cANSI
+
+noremap <silent> <c-n> :NERDTreeToggle<cr>
+noremap <silent> <M-n> :NERDTreeFind<cr>
+
+let g:NERDTreeIndicatorMap = {
+	\ "Modified"  : ">",
+	\ "Staged"    : "*",
+	\ "Untracked" : "?",
+	\ "Renamed"   : "=",
+	\ "Unmerged"  : "#",
+	\ "Deleted"   : "-",
+	\ "Dirty"     : ">",
+	\ "Clean"     : "$",
+	\ "Unknown"   : "."
+	\ }
+
+
+if has("persistent_undo")
+    set undodir='~/.vim/undodir/'
+    set undofile
+endif
+
+if has('win32')
+	set fileformats=dos
+endif
+set diffopt+=iwhite
+
+set showmatch " Show matching brackets.
+set ignorecase " Search ignoring case
+set smartcase " Do smart case matching
+set hlsearch
+set incsearch
+set hidden
+set mouse=a
+set showcmd
+set ruler
+set laststatus=2
+set statusline=%F%m%r%h%w\ [%{&ff},%{&fileencoding}][%Y][\%03.3b,0x\%02.2B][%l/%L,%v]%p%%
+set tag+=../tags
+set nostartofline " leave my cursor where it was
+set scrolloff=5 " Keep 5 lines (top/bottom) for scope
+set showcmd " show the command being typed
+set sidescrolloff=5 " Keep 5 lines at the size
+"set lazyredraw " do not redraw while running macros
+set wildchar=<Tab> wildmenu wildmode=full
+set fileencodings+=utf-8,cp1252,latin1
+set backspace=indent,eol,start
+set history=1000
+set matchpairs+=<:>
+
+"set ssop-=folds      " do not store folds in the session
+
+set backupdir=~/vimtmp,.
+set directory=~/vimtmp,.
+
+"set viewdir=~\.vim\views\   " Cause indent STOP working. VIM BUG??
+
+nnoremap <silent> <c-right> :bn<cr>
+nnoremap <silent> <c-left> :bp<cr>
+
+
+" BufExplorer
+nnoremap <C-Tab> :BufExplorer<CR>j
+
+" Undo tree
+nnoremap <F9> :UndotreeToggle<cr>
+
+" CtrlP
+"set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe,*.so,*.dll,*.class,*.jar,*.zip,*.xtendbin,*.war,*.ear,*.7z
+set wildignore+=*.swp,*.zip,*.exe,*.so,*.dll,*.class,*.jar,*.zip,*.xtendbin,*.war,*.ear,*.7z,*.jpg,*.jpeg,*.png,*.git,*.pdf
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn|target|bin)|target|sourceJarTemp|binJarTemp$',
+  \ 'file': '\v\.(so)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
+
+" --------------- auto cmds
+augroup XML
+  autocmd!
+  autocmd filetype xml   nnoremap <buffer> <space>	<localleader>%
+  autocmd filetype ant   nnoremap <buffer> <space>	<localleader>%
+augroup END
+autocmd Filetype xml setlocal ts=4 sts=4 sw=4 noexpandtab
+autocmd Filetype html setlocal ts=4 sts=4 sw=4 noexpandtab
+autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
+autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 expandtab
+autocmd Filetype java setlocal ts=4 sts=4 sw=4 expandtab
+autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
+
+au BufNewFile,BufRead *.ahk			setf autohotkey
+
+
+
+
+
+" --------------- My stuff
+
+function! AddToRegister(group)
+  call setreg(v:register, getreg() . submatch(a:group), 'l')
+  return submatch(0)
+endfunction
+
+function! YankAllMatched(...) range
+  if a:0 == 0
+    let l:group=0
+  else
+    let l:group=a:1
+  endif
+  call setreg(v:register, '', 'c')
+  execute a:firstline . ',' . a:lastline . 's//\=AddToRegister(' . l:group . ')/g'
+endfunction
+
+
+" Redmine table aligner
+command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|

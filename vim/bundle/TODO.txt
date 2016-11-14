@@ -1,0 +1,8 @@
+try:
+- NERD commenter
+- ragtag-vim (highlight closing tag)
+
+not included now:
+- vim-airline (required configuration)
+- vim-easymotion
+- argtextobj.vim (replaced by vim-textobject-pack)

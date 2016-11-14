@@ -1,30 +1,57 @@
-[submodule "vim/bundle/snipmate"]
-	path = vim/bundle/snipmate
-	url = http://github.com/msanders/snipmate.vim.git
-[submodule "vim/bundle/rails"]
-	path = vim/bundle/rails
-	url = http://github.com/tpope/vim-rails.git
+[submodule "vim/bundle/fugitive"]
+	path = vim/bundle/fugitive
+	url = http://github.com/tpope/vim-fugitive.git
+[submodule "vim/bundle/bufexplorer"]
+	path = vim/bundle/bufexplorer
+	url = https://github.com/jlanzarotta/bufexplorer
+[submodule "vim/bundle/vim-colors-solarized"]
+	path = vim/bundle/vim-colors-solarized
+	url = https://github.com/altercation/vim-colors-solarized
+[submodule "vim/bundle/argtextobj.vim"]
+	path = vim/bundle/argtextobj.vim
+	url = https://github.com/blueyed/argtextobj.vim.git
+[submodule "vim/bundle/autohotkey-ahk"]
+	path = vim/bundle/autohotkey-ahk
+	url = https://github.com/vim-scripts/autohotkey-ahk
+[submodule "vim/bundle/ctrlp.vim"]
+	path = vim/bundle/ctrlp.vim
+	url = https://github.com/kien/ctrlp.vim
+[submodule "vim/bundle/gundo.vim"]
+	path = vim/bundle/gundo.vim
+	url = https://github.com/sjl/gundo.vim
+[submodule "vim/bundle/incsearch.vim"]
+	path = vim/bundle/incsearch.vim
+	url = https://github.com/haya14busa/incsearch.vim
 [submodule "vim/bundle/nerdtree"]
 	path = vim/bundle/nerdtree
-	url = http://github.com/scrooloose/nerdtree.git
-[submodule "vim/bundle/textobj-user"]
-	path = vim/bundle/textobj-user
-	url = http://github.com/kana/vim-textobj-user.git
-[submodule "vim/bundle/textobj-rubyblock"]
-	path = vim/bundle/textobj-rubyblock
-	url = http://github.com/nelstrom/vim-textobj-rubyblock.git
-[submodule "vim/bundle/unimpaired"]
-	path = vim/bundle/unimpaired
-	url = http://github.com/tpope/vim-unimpaired.git
-[submodule "vim/bundle/surround"]
-	path = vim/bundle/surround
-	url = https://github.com/tpope/vim-surround.git
-[submodule "vim/bundle/gundo"]
-	path = vim/bundle/gundo
-	url = http://github.com/sjl/gundo.vim.git
+	url = https://github.com/scrooloose/nerdtree
+[submodule "vim/bundle/vim-repeat"]
+	path = vim/bundle/vim-repeat
+	url = https://github.com/tpope/vim-repeat
+[submodule "vim/bundle/vim-surround"]
+	path = vim/bundle/vim-surround
+	url = https://github.com/tpope/vim-surround
 [submodule "vim/bundle/tabular"]
 	path = vim/bundle/tabular
-	url = https://github.com/godlygeek/tabular.git
-[submodule "vim/bundle/vim-fugitive"]
-	path = vim/bundle/vim-fugitive
-	url = https://github.com/tpope/vim-fugitive.git
+	url = https://github.com/godlygeek/tabular
+[submodule "vim/bundle/tlib_vim"]
+	path = vim/bundle/tlib_vim
+	url = https://github.com/tomtom/tlib_vim
+[submodule "vim/bundle/undotree"]
+	path = vim/bundle/undotree
+	url = https://github.com/mbbill/undotree
+[submodule "vim/bundle/vim-snippets"]
+	path = vim/bundle/vim-snippets
+	url = https://github.com/honza/vim-snippets
+[submodule "vim/bundle/vim-snipmate"]
+	path = vim/bundle/vim-snipmate
+	url = https://github.com/garbas/vim-snipmate
+[submodule "vim/bundle/vim-textobject-pack"]
+	path = vim/bundle/vim-textobject-pack
+	url = https://github.com/etdev/vim-textobject-pack
+[submodule "vim/bundle/xmledit"]
+	path = vim/bundle/xmledit
+	url = https://github.com/sukima/xmledit
+[submodule "vim/bundle/vim-addon-mw-utils"]
+	path = vim/bundle/vim-addon-mw-utils
+	url = https://github.com/marcweber/vim-addon-mw-utils
