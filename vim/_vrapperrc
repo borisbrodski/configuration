@@ -1,0 +1,85 @@
+vmap Y ygv<esc>
+map gV `[v`]
+map ga :let @a=@"<ENTER>
+map -a :@let @a=@"<enter>
+
+
+" Smart surround macro
+" let @s='ox<ESC>vr}<<kkA<SPACE><ESC>r{j_'
+let @s='0v_hyox<ESC>0v_hp$vr}<<kkA<SPACE>x<ESC>r{j_'
+
+" Surround with comment
+surround c /*\r*/
+surround C <!--<SPACE>\r<SPACE>-->
+
+set autoindent
+set ignorecase
+set smartcase
+set incsearch
+
+set scrolloff=5
+
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set shiftround
+
+eclipseaction ga org.eclipse.egit.ui.team.AddToIndex
+eclipseaction linedown org.eclipse.ui.edit.text.moveLineDown
+eclipseaction lineup org.eclipse.ui.edit.text.moveLineUp
+nnoremap gj :linedown<ENTER>
+nnoremap gk :lineup<ENTER>
+" nnoremap ga :ga<ENTER> Don't work due to lost of the focus of the editor
+
+" Save and add to Git index
+command W w | ga
+command Q w | ga | q
+
+" Block visual selection with Ctrl+Shift+Q
+map <c-s-q> <c-v>
+
+" Block visual selection with Q in Visual Mode
+" vmap q <c-q>
+
+
+map <esc><esc> :let @/=""<enter>
+
+
+" Fix Vrapper missing feature
+nnoremap dv_ d^
+
+" Jump to open/close tag
+nnoremap -t vat<esc><esc>'<
+nnoremap -T vat<esc><esc>'>
+
+" If set, Vrapper will return to NormalMode anytime Eclipse exits its "Link Mode". Eclipse moves into Link Mode when prompting you to fill out arguments. This typically means Eclipse has drawn a box around some words and it wants you to fill them in.
+set noexitlinkmode
+
+" If set, search results will be highlighted
+set hlsearch
+
+" This setting changes the behavior of the hlsearch setting to restrict it to a number of editors. Whereas Vim will always quickly highlight the current search across all windows and tabs, in Vrapper this might take quite some time and resources. To tune the performance, the following values are supported:
+"   clear - Only one editor can have active highlighting. Switching might change the highlighting if an editor gets reloaded, but normally the highlighting only changes if running a search in the current active editor.
+"   local - Each editor gets its own highlighting, Vrapper will not clear or update it if doing anything in another editor.
+"   window - All editors in the current window will use the same highlighting except for those which have noglobalregisters set (those use a local search register).
+" Note that the above might behave weirdly if you open fresh editors or switch to an editor from your last session. This is a known issue and will be improved in due time.
+set hlscope=local
+
+vnoremap * y:set noregexsearch<enter>:let @/=@"<enter>n
+
+" Line completion
+imap <c-b> <c-x><c-l>
+
+" vmap <space> S)iconvert<ESC>
+" nmap <space> viaS)iconvert<ESC>
+" map <space> :retab<enter>:wq<ENTER>
+
+" map <space>a <esc>viwyllve
+" map <space>b o@Index(name = "<esc>pa")<esc>
+
+command NumberLines _vf/yj_P_W<C-a>
+
+" EXECUTE IMMEDIATE macro
+let @a=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
+

@@ -1,5 +1,9 @@
 set langmenu=en_US.UTF-8
-language en_US.UTF-8
+if has('win32')
+  language english
+else
+  language en_US.UTF-8
+endif
 
 execute pathogen#infect()
 Helptags
@@ -85,6 +89,7 @@ nnoremap <silent> <c-left> :bp<cr>
 
 " BufExplorer
 nnoremap <C-Tab> :BufExplorer<CR>j
+autocmd BufEnter BufExplorer map <buffer> <TAB> o
 
 " Undo tree
 nnoremap <F9> :UndotreeToggle<cr>
@@ -152,5 +157,6 @@ endfunction
 " Redmine table aligner
 command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|
 
+map <F5> :diffupdate<CR>
 
 " vim: ts=2 sts=2 sw=2 expandtab
