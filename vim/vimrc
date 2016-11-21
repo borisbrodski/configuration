@@ -11,6 +11,7 @@ syntax enable
 set background=light
 if has('gui_running')
   colorscheme solarized
+  " set guioptions-=T  " no toolbar
   if has('win32')
     au GUIEnter * simalt ~x
   endif
@@ -81,6 +82,8 @@ set matchpairs+=<:>
 set backupdir=~/vimtmp,.
 set directory=~/vimtmp,.
 
+let g:tex_flavor='tex'
+
 "set viewdir=~\.vim\views\   " Cause indent STOP working. VIM BUG??
 
 nnoremap <silent> <c-right> :bn<cr>
@@ -89,7 +92,10 @@ nnoremap <silent> <c-left> :bp<cr>
 
 " BufExplorer
 nnoremap <C-Tab> :BufExplorer<CR>j
-autocmd BufEnter BufExplorer map <buffer> <TAB> o
+augroup BUF_EXPLORER
+  autocmd!
+  autocmd BufEnter \[BufExplorer\] nmap <buffer> <TAB> o
+augroup END
 
 " Undo tree
 nnoremap <F9> :UndotreeToggle<cr>
@@ -118,25 +124,31 @@ map g# <Plug>(incsearch-nohl-g#)
 
 
 " --------------- auto cmds
-augroup XML
+augroup MY
   autocmd!
   autocmd filetype xml   nnoremap <buffer> <space>	<localleader>%
   autocmd filetype ant   nnoremap <buffer> <space>	<localleader>%
-augroup END
-autocmd Filetype xml setlocal ts=4 sts=4 sw=4 noexpandtab
-autocmd Filetype html setlocal ts=4 sts=4 sw=4 noexpandtab
-autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
-autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 expandtab
-autocmd Filetype java setlocal ts=4 sts=4 sw=4 expandtab
-autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
 
-au BufNewFile,BufRead *.ahk			setf autohotkey
+  autocmd Filetype xml setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd Filetype html setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd Filetype java setlocal ts=4 sts=4 sw=4 expandtab
+  autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
+
+  autocmd Filetype vim nnoremap <buffer> <SPACE> :execute getline(".")<CR>
+  autocmd BufWrite $MYVIMRC :source $MYVIMRC
+
+  autocmd BufNewFile,BufRead *.ahk			setf autohotkey
+augroup END
 
 
 
 
 
 " --------------- My stuff
+
+let mapleader="-"
 
 function! AddToRegister(group)
   call setreg(v:register, getreg() . submatch(a:group), 'l')
@@ -157,6 +169,11 @@ endfunction
 " Redmine table aligner
 command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|
 
-map <F5> :diffupdate<CR>
+nnoremap <F5> :diffupdate<CR>
+vnoremap <F5> <ESC>:diffupdate<CR>
+
+" Edit .vimrc
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>da :bd#<CR>
 
 " vim: ts=2 sts=2 sw=2 expandtab
