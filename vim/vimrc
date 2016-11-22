@@ -22,6 +22,7 @@ if has('gui_running')
   colorscheme solarized
   " set guioptions-=T  " no toolbar
   if has('win32')
+    set encoding=UTF-8
     au GUIEnter * simalt ~x
   endif
 endif
@@ -33,7 +34,9 @@ filetype plugin indent on
 " :set gfn?
 " :redir END
 if has('win32')
-  set guifont=Consolas:h11:cANSI
+  "set guifont=Consolas:h11:cANSI
+  set guifont=Droid_Sans_Mono_Dotted_for_Powe:h11:cANSI
+  "set guifont=Hack:h11:cANSI
 else
   set guifont=Monospace\ 11
 endif
@@ -98,6 +101,9 @@ let g:tex_flavor='tex'
 nnoremap <silent> <c-right> :bn<cr>
 nnoremap <silent> <c-left> :bp<cr>
 
+" vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
 
 " BufExplorer
 nnoremap <C-Tab> :BufExplorer<CR>j
