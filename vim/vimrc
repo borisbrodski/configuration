@@ -1,3 +1,12 @@
+" Mapping overview
+" <leader>n  -  NERDTree
+" Alt-n      -  NERDTreeFind
+" Ctrl-n     -  multi-cursor
+" F2         -  indent lines toggle
+" F9         -  undo tree
+"
+
+
 set langmenu=en_US.UTF-8
 if has('win32')
   language english
@@ -28,7 +37,7 @@ if has('win32')
 else
   set guifont=Monospace\ 11
 endif
-noremap <silent> <c-n> :NERDTreeToggle<cr>
+noremap <silent> <leader>n :NERDTreeToggle<cr>
 noremap <silent> <M-n> :NERDTreeFind<cr>
 
 let g:NERDTreeIndicatorMap = {
@@ -122,6 +131,9 @@ map #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 
+" indentline
+let g:indentLine_enabled = 0
+nnoremap <silent> <F2> :IndentLinesToggle<CR>
 
 " --------------- auto cmds
 augroup MY
