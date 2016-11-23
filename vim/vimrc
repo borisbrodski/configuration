@@ -89,6 +89,8 @@ set fileencodings+=utf-8,cp1252,latin1
 set backspace=indent,eol,start
 set history=1000
 set matchpairs+=<:>
+set modeline
+set modelines=5
 
 "set ssop-=folds      " do not store folds in the session
 
