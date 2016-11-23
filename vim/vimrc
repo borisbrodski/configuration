@@ -6,6 +6,9 @@
 " F9         -  undo tree
 "
 
+if !empty(glob("$HOME/.vimrc_local-before"))
+   source $HOME/.vimrc_local-before
+endif
 
 set langmenu=en_US.UTF-8
 if has('win32')
@@ -37,8 +40,6 @@ if has('win32')
   "set guifont=Consolas:h11:cANSI
   set guifont=Droid_Sans_Mono_Dotted_for_Powe:h11:cANSI
   "set guifont=Hack:h11:cANSI
-else
-  set guifont=Monospace\ 11
 endif
 noremap <silent> <leader>n :NERDTreeToggle<cr>
 noremap <silent> <M-n> :NERDTreeFind<cr>
@@ -198,4 +199,8 @@ nnoremap <leader>da :bd#<CR>
 " Uncomment large block with -u
 nmap <silent> <leader>u vaC<leader>cu
 
-" vim: ts=2 sts=2 sw=2 expandtab
+if !empty(glob("$HOME/.vimrc_local-after"))
+   source "$HOME/.vimrc_local-after"
+endif
+
+" vim: set ts=2 sts=2 sw=2 expandtab:
