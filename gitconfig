@@ -1,0 +1,27 @@
+[alias]
+	s = status
+	a = add --patch
+	l = log '--pretty=%e%Cred%h%Creset %ad %Cred%d%Creset %Cgreen%an%Creset <%Cblue%ae%Creset> %s' --date=short
+	lg = log --graph '--pretty=%e%Cred%h%Creset %ar %Cred%d%Creset %Cgreen%an%Creset <%Cblue%ae%Creset> %s' --date=short
+	fr = "!\t\t\tNAME=$(git symbolic-ref -q HEAD) && \t\t\t\tREMOTE_BRANCH=$(git config --get branch.${NAME##refs/heads/}.merge) ; \t\t\t\tif [ \"x$REMOTE_BRANCH\" == \"x\" ] ; then \t\t\t\t\techo \"No corresponding remote branch found (Local branch '${NAME##refs/heads/}')\" ; \t\t\t\t\texit 1 ; \t\t\t\tfi ; \t\t\t\tREMOTE_NAME=$(git config --get branch.${NAME##refs/heads/}.remote)/${REMOTE_BRANCH##refs/heads/} ; \t\t\t\tREMOTE_NAME=${REMOTE_NAME:-HEAD} && \t\t\t\tgit branch --no-track -f FR_OLD_REMOTE_HEAD $REMOTE_NAME && \t\t\t\tgit branch --no-track -f FR_MERGE_BASE $(git merge-base $REMOTE_NAME HEAD) && \t\t\t\tgit fetch --all --prune && \t\t\t\tif [ \"$(git show-ref --hash FR_OLD_REMOTE_HEAD)\" != \"$(git show-ref --hash $REMOTE_NAME)\" ] ; then \t\t\t\t\techo ------------------------------ ; \t\t\t\t\techo  FETCHED CHANGES ; \t\t\t\t\techo ------------------------------ ; \t\t\t\t\tgit info-after-fr FR_OLD_REMOTE_HEAD ; \t\t\t\tfi ; \t\t\t\tif [ \"$(git merge-base $REMOTE_NAME HEAD)\" != \"$(git show-ref --hash $REMOTE_NAME)\" ] ; then \t\t\t\t\techo ------------------------------ ; \t\t\t\t\techo  REBASING OVER CHANGES ; \t\t\t\t\techo ------------------------------ ; \t\t\t\t\tgit info-after-fr FR_MERGE_BASE ; \t\t\t\tfi ; \t\t\t\tgit rebase ; \t\t\t\t"
+	info-after-fr = "!\tNAME=$(git symbolic-ref -q HEAD) && \t\t\t\tREMOTE_BRANCH=$(git config --get branch.${NAME##refs/heads/}.merge) ; \t\t\t\tif [ \"x$REMOTE_BRANCH\" == \"x\" ] ; then \t\t\t\t\techo \"No corresponding remote branch found (Local branch '${NAME##refs/heads/}')\" ; \t\t\t\t\texit 1 ; \t\t\t\tfi ; \t\t\t\tREMOTE_NAME=$(git config --get branch.${NAME##refs/heads/}.remote)/${REMOTE_BRANCH##refs/heads/} ; \t\t\t\tREMOTE_NAME=${REMOTE_NAME:-HEAD} && \t\t\t\tBRANCH=${1:-FR_MERGE_BASE} && \t\t\t\tgit lg $BRANCH..$REMOTE_NAME && \t\t\t\tgit diff --stat=180,160 $BRANCH..$REMOTE_NAME && \t\t\t\tsh -c ''"
+	rebase-ignore-all-space = rebase -s recursive -Xignore-all-space
+	addNonWhitespace = !sh -c 'git diff -w --no-color "$@" | git apply --cached --ignore-whitespace' -
+	c = diff --name-only --diff-filter=U
+
+[merge]
+	defaultToUpstream = 1
+	renormalize = true
+	renamelimit = 1000000
+
+[gui]
+	gcwarning = false
+	encoding = utf-8
+	diffopts = --ignore-all-space
+	tabsize = 4
+
+[rerere]
+	enabled = 1
+
+[push]
+	default = upstream
