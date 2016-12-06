@@ -30,6 +30,8 @@ eclipseaction linedown org.eclipse.ui.edit.text.moveLineDown
 eclipseaction lineup org.eclipse.ui.edit.text.moveLineUp
 nnoremap gj :linedown<ENTER>
 nnoremap gk :lineup<ENTER>
+vnoremap gj :linedown<ENTER>
+vnoremap gk :lineup<ENTER>
 " nnoremap ga :ga<ENTER> Don't work due to lost of the focus of the editor
 
 " Save and add to Git index
