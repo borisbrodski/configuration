@@ -31,6 +31,11 @@ if has('gui_running')
 endif
 filetype plugin indent on
 
+" TEST IT
+set encoding=UTF-8
+
+let mapleader="-"
+
 
 " Set GUI font
 " :redir @a
@@ -190,8 +195,6 @@ augroup END
 
 
 " --------------- My stuff
-
-let mapleader="-"
 
 function! AddToRegister(group)
   call setreg(v:register, getreg() . submatch(a:group), 'l')
