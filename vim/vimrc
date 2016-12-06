@@ -215,6 +215,11 @@ endfunction
 " Redmine table aligner
 command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|
 
+" ---- C++ ----
+
+" Enter GUI (Generate GUIDd: https://www.guidgen.com/)
+command! PasteGUID execute "normal! i// {\<esc>\"+pA}\<esc>o\<esc>SDEFINE_GUID(\<c-r>+);\<esc>0f-x;x;x;xF(a, 0x\<esc>8l.4l.4l.2l.2l.2l.2l.2l.2l.2l.F(l"
+
 nnoremap <F5> :diffupdate<CR>
 vnoremap <F5> <ESC>:diffupdate<CR>
 
