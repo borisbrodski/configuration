@@ -2,12 +2,16 @@
 " <leader>n  -  NERDTree
 " Alt-n      -  NERDTreeFind
 " Ctrl-n     -  multi-cursor
-" F2         -  indent lines toggle
+" F1/S-F1    -  cn/cp
+" F3         -  indent lines toggle
 " F9         -  undo tree
 "
+" <leader>ev - edit .vimrc
+" <leader>et - edit ~/Desktop/TODO.txt
+" <leader>da - delete alternative buffer
 
 if !empty(glob("$HOME/.vimrc_local-before"))
-   source $HOME/.vimrc_local-before
+  source $HOME/.vimrc_local-before
 endif
 
 set langmenu=en_US.UTF-8
@@ -43,7 +47,8 @@ let mapleader="-"
 " :redir END
 if has('win32')
   "set guifont=Consolas:h11:cANSI
-  set guifont=Droid_Sans_Mono_Dotted_for_Powe:h11:cANSI
+  "set guifont=Droid_Sans_Mono_Dotted_for_Powe:h11:cANSI
+  set guifont=DejaVu_Sans_Mono_for_Powerline:h10:cANSI
   "set guifont=Hack:h11:cANSI
 endif
 noremap <silent> <leader>n :NERDTreeToggle<cr>
@@ -169,7 +174,19 @@ map g# <Plug>(incsearch-nohl-g#)
 
 " indentline
 let g:indentLine_enabled = 0
-nnoremap <silent> <F2> :IndentLinesToggle<CR>
+nnoremap <silent> <F3> :IndentLinesToggle<CR>
+
+
+" TODO.txt
+"
+function! InitTODO()
+  runtime TODO.vim
+  "command! Align Tabular /+-\|+\|| \?/l0l0l0
+""  nnoremap <silent> <space> mp:Align<cr>`p
+  "nnoremap <silent> <Plug>OInCell :let save_lz = &lazyredraw<cr>:set lazyredraw<cr>T\|lmp<c-v>/\V+<cr>kkO<esc>t\|<c-v>`pdjPk:Align<cr>:let @/=""<cr>:let &lazyredraw = save_lz<cr>`p:silent! call repeat#set("\<Plug>OInCell", v:count)<CR>
+  "nmap <leader>O <Plug>OInCell
+endfunction
+
 
 " --------------- auto cmds
 augroup MY
@@ -183,11 +200,12 @@ augroup MY
   autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 expandtab
   autocmd Filetype java setlocal ts=4 sts=4 sw=4 expandtab
   autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
-
   autocmd Filetype vim nnoremap <buffer> <SPACE> :execute getline(".")<CR>
-  autocmd BufWrite $MYVIMRC :source $MYVIMRC
 
-  autocmd BufNewFile,BufRead *.ahk			setf autohotkey
+  autocmd BufWritePost $MYVIMRC           source $MYVIMRC
+
+  autocmd BufNewFile,BufRead *.ahk			  setf autohotkey
+  autocmd BufNewFile,BufRead TODO.txt			call InitTODO()
 augroup END
 
 
@@ -220,11 +238,20 @@ command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|
 " Enter GUI (Generate GUIDd: https://www.guidgen.com/)
 command! PasteGUID execute "normal! i// {\<esc>\"+pA}\<esc>o\<esc>SDEFINE_GUID(\<c-r>+);\<esc>0f-x;x;x;xF(a, 0x\<esc>8l.4l.4l.2l.2l.2l.2l.2l.2l.2l.F(l"
 
+
+command! ConvertToPLSQL execute "normal! vipU:'<,'>s/\\V\\^\\/\\$//e\<cr>`<vip\<esc>`<I'\<esc>`>A';\<esc>`<IEXECUTE IMMEDIATE \<esc>"
+
+nnoremap <silent> <F1> :cnext<CR>
+nnoremap <silent> <S-F1> :cprevious<CR>
+
 nnoremap <F5> :diffupdate<CR>
 vnoremap <F5> <ESC>:diffupdate<CR>
 
 " Edit .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
+
+" Edit TODO
+nnoremap <leader>et :e ~\Desktop\TODO.txt<CR>
 
 nnoremap <leader>da :bd#<CR>
 
@@ -234,5 +261,8 @@ nmap <silent> <leader>u vaC<leader>cu
 if !empty(glob("$HOME/.vimrc_local-after"))
    source "$HOME/.vimrc_local-after"
 endif
+
+" Prevent vim from closing. Map :q => :close
+cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
 
 " vim: set ts=2 sts=2 sw=2 expandtab:
