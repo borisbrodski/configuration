@@ -1,3 +1,151 @@
+let s:char_pipe='│'
+let s:char_dash='─'
+let s:char_1='└'
+let s:char_2='┴'
+let s:char_3='┘'
+let s:char_4='├'
+let s:char_5='┼'
+let s:char_6='┤'
+let s:char_7='┌'
+let s:char_8='┬'
+let s:char_9='┐'
+let s:chars_non_straight=s:char_1 . s:char_2 . s:char_3 . s:char_4 . s:char_5 . s:char_6 . s:char_7 . s:char_8 . s:char_9
+let s:header_minimum_dash = repeat(s:char_dash, 8)
+
+fun! TODO#align()
+  let l:winview = winsaveview()
+
+  let l:i = 1
+  let l:line_count = line('$')
+  let l:top_line = ""
+  let l:top_line_pos = 0
+  let l:middle_line = ""
+  let l:middle_line_pos = 0
+  let l:bottom_line = ""
+  let l:bottom_line_pos = 0
+  while l:i <= l:line_count
+    let l:line = getline(l:i)
+    if stridx(l:line, s:char_7) == 0
+      if l:top_line_pos != 0
+        echoerr 'Invalid TODO format (1)'
+        return
+      endif
+      let l:top_line_pos = l:i
+      let l:top_line = l:line
+    elseif stridx(l:line, s:char_4) == 0
+      if l:middle_line_pos != 0
+        echoerr 'Invalid TODO format (2)'
+        return
+      endif
+      let l:middle_line_pos = l:i
+      let l:middle_line = l:line
+    elseif stridx(l:line, s:char_1) == 0
+      if l:bottom_line_pos != 0
+        echoerr 'Invalid TODO format (3)'
+        return
+      endif
+      let l:bottom_line_pos = l:i
+      let l:bottom_line = l:line
+      break
+    endif
+    let l:i = l:i + 1
+  endwhile
+  if l:top_line_pos == 0 || l:middle_line_pos == 0 || l:bottom_line_pos == 0
+    echoerr 'Invalid TODO format (4)'
+  endif
+
+  if match(getline(l:middle_line_pos - 1), '\V\^\[[:space:]' . s:char_pipe . ']\+\$') == -1
+    execute l:middle_line_pos . 'put! = ' . "'" . repeat(s:char_pipe, 3) . "'"
+    let l:middle_line_pos = l:middle_line_pos + 1
+    let l:bottom_line_pos = l:bottom_line_pos + 1
+  endif
+  if match(getline(l:bottom_line_pos - 1), '\V\^\[[:space:]' . s:char_pipe . ']\+\$') == -1
+    execute l:bottom_line_pos . 'put! = ' . "'" . repeat(s:char_pipe, 3) . "'"
+    let l:bottom_line_pos = l:bottom_line_pos + 1
+  endif
+  for l:l in [l:top_line_pos, l:middle_line_pos, l:bottom_line_pos]
+    execute "silent! " . l:l . "s/\\V\\[" . s:chars_non_straight . "]/" . s:char_pipe . "/g"
+    execute "silent! " . l:l . "s/\\V" . s:char_dash . "\\+/ " . s:header_minimum_dash . " /g" 
+    execute "silent! " . l:l . "s/\\V\\(" . s:char_dash . "\\s\\)\\s\\*/\\1/g"
+    execute "silent! " . l:l . "s/\\V\\s\\*\\(\\s" . s:char_dash . "\\)/\\1/g"
+    execute "silent! " . l:l . "s/\\V\\s\\+\\$//g"
+  endfor
+
+  execute l:top_line_pos . "," . l:bottom_line_pos . "Tabularize /" . s:char_pipe
+
+  let l:header_char_dict = {
+        \  l:top_line_pos    : [s:char_7, s:char_8, s:char_9],
+        \  l:middle_line_pos : [s:char_4, s:char_5, s:char_6],
+        \  l:bottom_line_pos : [s:char_1, s:char_2, s:char_3]
+        \ }
+  for l:l in keys(l:header_char_dict)
+    let l:cs = l:header_char_dict[l:l]
+    execute "silent! " . l:l . 's/\V\s\+\ze' . s:char_pipe . '/\=repeat("' . s:char_dash . '", strlen(submatch(0)))/g'
+    execute "silent! " . l:l . 's/\V' . s:char_pipe . '\zs\s\+/\=repeat("' . s:char_dash . '", strlen(submatch(0)))/g'
+    for l:i in [0, 1, 2]
+      execute "silent! " . l:l . 's/\V' . s:char_pipe . '/' . l:cs[l:i] . '/'
+    endfor
+  endfor
+  execute "silent! " . l:top_line_pos . "," . l:bottom_line_pos .
+    \ 's/\V\^\(' . s:char_pipe . '\s\*' . s:char_pipe . '\s\*' . s:char_pipe . '\n\)' .
+    \ '\(\^' . s:char_pipe . '\s\*' . s:char_pipe . '\s\*' . s:char_pipe . '\n\)\+' .
+    \ '/\1/g'
+  "execute "silent! " . l:top_line_pos . "s/\\V\\s/" . s:char_dash . "/g"
+  "execute "silent! " . l:top_line_pos . "s/\\V" . s:char_pipe . "\\ze" . s:char_dash . "\\+/" . s:char_7 . "/"
+  "execute "silent! " . l:top_line_pos . "s/\\V" . s:char_dash . "\\zs" . s:char_pipe . "\\ze" . s:char_dash . "/" . s:char_8 . "/"
+  "execute "silent! " . l:top_line_pos . "s/\\V" . s:char_dash . "\\zs" . s:char_pipe . "/" . s:char_9 . "/"
+  "execute l:middle_line_pos . "d"
+  "execute l:bottom_line_pos . "d"
+  call winrestview(l:winview)
+endfun
+
+fun! TODO#getColumnPosition(line, position)
+  let l:right_pos = match(a:line, '\V' . s:char_pipe, a:position)
+  if l:right_pos == -1
+    return []
+  endif
+  let l:left_pos = strridx(a:line, s:char_pipe, a:position)
+  if l:left_pos == -1
+    return []
+  endif
+
+  if l:left_pos != l:right_pos
+    return [l:left_pos, l:right_pos]
+  endif
+
+  if l:right_pos < strlen(a:line) + 1
+    let l:alt_right_pos = stridx(a:line, s:char_pipe, a:position + 1)
+    if l:alt_right_pos != -1
+      return [l:left_pos, l:alt_right_pos]
+    endif
+  endif
+
+  if l:left_pos > 0
+    let l:alt_left_pos = strridx(a:line, s:char_pipe, a:position - 1)
+    if l:alt_left_pos != -1
+      return [l:alt_left_pos, l:right_pos]
+    endif
+  endif
+
+  return []
+endfun
+
+augroup AU_TODO
+  " this one is which you're most likely to use?
+  autocmd InsertLeave <buffer> silent! :call TODO#align()
+augroup end
+
+nnoremap <buffer><silent> <SPACE> :silent :call TODO#align()<cr>
+
+
+
+
+
+
+
+
+
+
 function! Strip(input_string)
     return substitute(a:input_string, '^\s*\(.\{-}\)\s*$', '\1', '')
 endfunction
@@ -289,6 +437,9 @@ omap <buffer> $ <Plug>TODO_normal_dollar
 "Notes
 "1.^ As of Unicode version 9.0
 
+" strchars(<str>) - count of unicode chars
+" strlen/len      - count of bytes
+" strcharpart     - unicode equivalent of [a:b]
 
 
 " vim: set ts=2 sts=2 sw=2 expandtab:

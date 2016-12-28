@@ -3,4 +3,5 @@
 /vim/bundle/latex/ftplugin/latex-suite/outline.pyc
 *.swp
 tags
+ctags
 /vim/tmp

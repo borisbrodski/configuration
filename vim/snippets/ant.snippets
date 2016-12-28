@@ -1,0 +1,33 @@
+extends xml
+snippet <macrodef
+	<macrodef name="${1}">
+		<attribute name="${2}" default="${3}"/>
+		<sequential>
+			${0}
+		</sequential>
+	</macrodef>
+snippet <attribute
+	<attribute name="${1}" default="${2}"/>${0}
+
+snippet <!-
+	<!--
+	  - ${0}
+	  -->
+
+snippet <if
+	<if>
+		${0}
+		<then>
+		</then>
+		<else>
+		</else>
+	</if>
+
+snippet <lo
+	<local name="${1}"/>${0}
+snippet <pr
+	<property name="${1}" value="${2}"/>${0}
+snippet <lp
+	<local name="$1"/>
+	<property name="${1:}" value="${2:}"/>
+

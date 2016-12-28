@@ -1,30 +1,47 @@
+set hidden
 " Mapping overview
 " <leader>n  -  NERDTree
 " Alt-n      -  NERDTreeFind
 " Ctrl-n     -  multi-cursor
 " F1/S-F1    -  cn/cp
 " F3         -  indent lines toggle
+" F4         -  taglist toggle
+" Shift-F4   -  taglist update
 " F9         -  undo tree
 "
 " <leader>ev - edit .vimrc
 " <leader>et - edit ~/Desktop/TODO.txt
 " <leader>da - delete alternative buffer
-
-if !empty(glob("$HOME/.vimrc_local-before"))
-  source $HOME/.vimrc_local-before
+" <leader>ot - open tag list
+if !exists("g:reload_count")
+  let g:reload_count=1
+else
+  let g:reload_count+=1
 endif
+let g:pathogen_disabled = []
 
-set langmenu=en_US.UTF-8
+let $LANG='C'
 if has('win32')
   language english
 else
   language en_US.UTF-8
 endif
+set langmenu=en_US.UTF-8
+
+if !empty(glob("$HOME/.vimrc_local-before"))
+  source $HOME/.vimrc_local-before
+endif
+
+let mapleader="-"
+let maplocalleader="ä"
 
 execute pathogen#infect()
 Helptags
-syntax enable
-set background=light
+if g:reload_count == 1
+  " BUG? Reexecuting this turns syntax highlighting off
+  syntax enable
+endif
+
 if has('gui_running')
   colorscheme solarized
   " set guioptions-=T  " no toolbar
@@ -32,13 +49,14 @@ if has('gui_running')
     set encoding=UTF-8
     au GUIEnter * simalt ~x
   endif
+  set background=dark
+else
+  set background=light
 endif
 filetype plugin indent on
 
 " TEST IT
 set encoding=UTF-8
-
-let mapleader="-"
 
 
 " Set GUI font
@@ -82,7 +100,8 @@ set ignorecase " Search ignoring case
 set smartcase " Do smart case matching
 set hlsearch
 set incsearch
-set hidden
+"set hidden
+
 set mouse=a
 set showcmd
 set ruler
@@ -101,6 +120,7 @@ set history=1000
 set matchpairs+=<:>
 set modeline
 set modelines=5
+set number
 
 "set ssop-=folds      " do not store folds in the session
 
@@ -113,6 +133,7 @@ let g:tex_flavor='tex'
 
 nnoremap <silent> <c-right> :bn<cr>
 nnoremap <silent> <c-left> :bp<cr>
+inoremap <TAB> <ESC>
 
 " vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -145,6 +166,7 @@ nnoremap <C-Tab> :BufExplorer<CR>j
 augroup BUF_EXPLORER
   autocmd!
   autocmd BufEnter \[BufExplorer\] nmap <buffer> <TAB> o
+  autocmd BufEnter \[BufExplorer\] nmap <buffer> <C-S-TAB> k
 augroup END
 
 " Undo tree
@@ -176,6 +198,16 @@ map g# <Plug>(incsearch-nohl-g#)
 let g:indentLine_enabled = 0
 nnoremap <silent> <F3> :IndentLinesToggle<CR>
 
+" taglist-vim
+let g:tlist_ant_settings='ant;p:project;t:target;m:macros'
+nmap <silent> <F4>   :TlistToggle<CR>
+nmap <silent> <S-F4> :TlistUpdate<CR>
+nnoremap <silent> <leader>ot   :TlistOpen<CR>
+
+" Snipmate
+" <TAB> mapped to <ESC>, so use Shift-TAB
+imap <s-TAB> <Plug>snipMateTrigger
+
 
 " TODO.txt
 "
@@ -193,7 +225,11 @@ augroup MY
   autocmd!
   autocmd filetype xml   nnoremap <buffer> <space>	<localleader>%
   autocmd filetype ant   nnoremap <buffer> <space>	<localleader>%
+  autocmd filetype ant   setlocal ts=4 sts=4 sw=4 noexpandtab iskeyword+=-,.
+  autocmd filetype jproperties setlocal ts=4 sts=4 sw=4 noexpandtab iskeyword+=-,.
 
+  autocmd Filetype c setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd Filetype cpp setlocal ts=4 sts=4 sw=4 noexpandtab
   autocmd Filetype xml setlocal ts=4 sts=4 sw=4 noexpandtab
   autocmd Filetype html setlocal ts=4 sts=4 sw=4 noexpandtab
   autocmd Filetype ruby setlocal ts=2 sts=2 sw=2 expandtab
@@ -207,7 +243,6 @@ augroup MY
   autocmd BufNewFile,BufRead *.ahk			  setf autohotkey
   autocmd BufNewFile,BufRead TODO.txt			call InitTODO()
 augroup END
-
 
 
 
@@ -228,6 +263,40 @@ function! YankAllMatched(...) range
   call setreg(v:register, '', 'c')
   execute a:firstline . ',' . a:lastline . 's//\=AddToRegister(' . l:group . ')/g'
 endfunction
+
+
+" Highlighting
+
+highlight mygroup1 ctermbg=blue guibg=blue
+highlight mygroup2 ctermbg=green guibg=brown
+highlight mygroup3 ctermbg=darkgreen guibg=darkgreen
+
+function! MatchGroup(index, pattern)
+  execute a:index . 'match myGroup' . a:index . ' /' . a:pattern . '/'
+endfunction
+function! MatchGroupV(index)
+  let l:old = @"
+  execute "normal! gvy"
+  let l:pattern = '\V' . @"
+  let @"=l:old
+  call MatchGroup(a:index, l:pattern)
+endfunction
+
+nnoremap <silent> 1m :call MatchGroup(1, '\<' . expand("<cword>") . '\>')<cr>
+nnoremap <silent> 2m :call MatchGroup(2, '\<' . expand("<cword>") . '\>')<cr>
+nnoremap <silent> 3m :call MatchGroup(3, '\<' . expand("<cword>") . '\>')<cr>
+nnoremap <silent> 1M :call MatchGroup(1, '\V' . escape(expand("<cword>"), '\'))<cr>
+nnoremap <silent> 2M :call MatchGroup(2, '\V' . escape(expand("<cword>"), '\'))<cr>
+nnoremap <silent> 3M :call MatchGroup(3, '\V' . escape(expand("<cword>"), '\'))<cr>
+
+vnoremap <silent> 1m <ESC>:call MatchGroupV(1)<cr>
+vnoremap <silent> 2m <ESC>:call MatchGroupV(2)<cr>
+vnoremap <silent> 3m <ESC>:call MatchGroupV(3)<cr>
+
+
+nnoremap <silent> 1<c-m> :1match<cr>
+nnoremap <silent> 2<c-m> :2match<cr>
+nnoremap <silent> 3<c-m> :3match<cr>
 
 
 " Redmine table aligner
@@ -258,11 +327,12 @@ nnoremap <leader>da :bd#<CR>
 " Uncomment large block with -u
 nmap <silent> <leader>u vaC<leader>cu
 
+" Prevent vim from closing. Map :q => :close
+cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
+
 if !empty(glob("$HOME/.vimrc_local-after"))
    source "$HOME/.vimrc_local-after"
 endif
 
-" Prevent vim from closing. Map :q => :close
-cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
-
 " vim: set ts=2 sts=2 sw=2 expandtab:
+"

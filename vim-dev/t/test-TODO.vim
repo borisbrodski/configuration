@@ -27,52 +27,143 @@ describe 'TODO-lib'
     source ~/vimfiles/bundle/tabular/autoload/tabular.vim
     source ~/vimfiles/bundle/tabular/plugin/Tabular.vim
     new
-    let l:content = [
-      \ '┌───────── 1/1 ──────┬───────── 1/2 ────────────┐',
-      \ '│ 123456             │ abcdef                   │',
-      \ '│ 0987654321         │                          │',
-      \ '│                    │                          │',
-      \ '├───────── 2/1 ──────┼───────── 2/2 ────────────┤',
-      \ '│                    │ abcdefgh                 │',
-      \ '│                    │ ABCDEFGHI                │',
-      \ '│                    │ QWERTZUIOPASDFGHJKLYXCVBN│',
-      \ '└────────────────────┴──────────────────────────┘']
-    put! = l:content
     source ../vim/TODO.vim
   end
   after
     close!
   end
-  it 'can read the contents of the buffer'
-    Expect stridx(getline(1), '1/1') > 0
-    Expect "" to_have_content[
-      \ '┌───────── 1/1 ──────┬───────── 1/2 ────────────┐',
-      \ '│ 123456             │ abcdef                   │',
-      \ '│ 0987654321         │                          │',
-      \ '│                    │                          │',
-      \ '├───────── 2/1 ──────┼───────── 2/2 ────────────┤',
-      \ '│                    │ abcdefgh                 │',
-      \ '│                    │ ABCDEFGHI                │',
-      \ '│                    │ QWERTZUIOPASDFGHJKLYXCVBN│',
-      \ '└────────────────────┴──────────────────────────┘']
+  describe 'TODO-aligner'
+    it 'align empty file'
+      let l:content = [
+        \ '┌───────── a ─┬───────── c ─┐',
+        \ '├───────── b ─┼───────── d ─┤',
+        \ '└─────────────┴─────────────┘']
+      silent! put! = l:content
+      call TODO#align()
+      Expect "" to_have_content[
+        \ '┌───────── a ─────────┬───────── c ─────────┐',
+        \ '│                     │                     │',
+        \ '├───────── b ─────────┼───────── d ─────────┤',
+        \ '│                     │                     │',
+        \ '└─────────────────────┴─────────────────────┘']
+    end
+    it 'one space around cell caption'
+      let l:content = [
+        \ '┌─────────x────┬─────────    aaa    ────────────┐',
+        \ '├─────────aa    a──────┼─────────  ───────────┤',
+        \ '└────────────────────┴──────────────────────────┘']
+      silent! put! = l:content
+      call TODO#align()
+      Expect "" to_have_content[
+        \ '┌───────── x ───────────────┬───────── aaa ─────────┐',
+        \ '│                           │                       │',
+        \ '├───────── aa    a ─────────┼───────── ─────────────┤',
+        \ '│                           │                       │',
+        \ '└───────────────────────────┴───────────────────────┘']
+    end
+    it 'remove leave only one empty line at the end'
+      let l:content = [
+        \ '┌───────── 1/1 ────┬─────────    1/2    ────────────┐',
+        \ '│               │                      │',
+        \ '│               │                      │',
+        \ '│               │                      │',
+        \ '│               │                      │',
+        \ '├─────────2/1──────┼─────────2/2───────────┤',
+        \ '│               │                      │',
+        \ '│           │                      │',
+        \ '└────────────────────┴──────────────────────────┘']
+      silent! put! = l:content
+      call TODO#align()
+      Expect "" to_have_content[
+        \ '┌───────── 1/1 ─────────┬───────── 1/2 ─────────┐',
+        \ '│                       │                       │',
+        \ '├───────── 2/1 ─────────┼───────── 2/2 ─────────┤',
+        \ '│                       │                       │',
+        \ '└───────────────────────┴───────────────────────┘']
+    end
+    it 'complex table'
+      let l:content = [
+        \ '┌─────────  1/1  ────┬───────── 1/2 ────────────┐',
+        \ '│ 123456             │ abcdef                   │',
+        \ '│ 0987654321         │                          │',
+        \ '│                    │                          │',
+        \ '│                    │last line                 │',
+        \ '├───────── 2/1 ──────┼───────── 2  2 ───────────┤',
+        \ '│                    │ abcdefgh                 │',
+        \ '│                    │ ABCDEFGHI                │',
+        \ '│                    │ QWERTZUIOPASDFGHJKLYXCVBN│',
+        \ '└────────────────────┴──────────────────────────┘']
+      silent! put! = l:content
+      call TODO#align()
+      Expect "" to_have_content[
+        \ '┌───────── 1/1 ─────────┬───────── 1/2 ─────────────┐',
+        \ '│ 123456                │ abcdef                    │',
+        \ '│ 0987654321            │                           │',
+        \ '│                       │                           │',
+        \ '│                       │ last line                 │',
+        \ '│                       │                           │',
+        \ '├───────── 2/1 ─────────┼───────── 2  2 ────────────┤',
+        \ '│                       │ abcdefgh                  │',
+        \ '│                       │ ABCDEFGHI                 │',
+        \ '│                       │ QWERTZUIOPASDFGHJKLYXCVBN │',
+        \ '│                       │                           │',
+        \ '└───────────────────────┴───────────────────────────┘']
+    end
+    it 'cursor stays at the position'
+      let l:content = [
+        \ '┌─────────  1/1  ────┬───────── 1/2 ────────────┐',
+        \ '│ 123456             │ abcdef                   │',
+        \ '│ 0987654321         │                          │',
+        \ '│                    │                          │',
+        \ '│                    │last line                 │',
+        \ '├───────── 2/1 ──────┼───────── 2  2 ───────────┤',
+        \ '│                    │ abcdefgh                 │',
+        \ '│                    │ ABCDEFGHI                │',
+        \ '│                    │ QWERTZUIOPASDFGHJKLYXCVBN│',
+        \ '└────────────────────┴──────────────────────────┘']
+      silent! put! = l:content
+      5
+      execute "normal! 9|"
+      let l:pos = getpos('.')
+      call TODO#align()
+      Expect "" to_have_content[
+        \ '┌───────── 1/1 ─────────┬───────── 1/2 ─────────────┐',
+        \ '│ 123456                │ abcdef                    │',
+        \ '│ 0987654321            │                           │',
+        \ '│                       │                           │',
+        \ '│                       │ last line                 │',
+        \ '│                       │                           │',
+        \ '├───────── 2/1 ─────────┼───────── 2  2 ────────────┤',
+        \ '│                       │ abcdefgh                  │',
+        \ '│                       │ ABCDEFGHI                 │',
+        \ '│                       │ QWERTZUIOPASDFGHJKLYXCVBN │',
+        \ '│                       │                           │',
+        \ '└───────────────────────┴───────────────────────────┘']
+      Expect getpos('.') == l:pos
+    end
   end
-  it 'simple align works'
-    2
-    normal! f6axxx
-    call todo#align()
-    Expect "" to_have_content[
-      \ '┌───────── 1/1 ──────┬───────── 1/2 ────────────┐',
-      \ '│ 123456             │ abcdef                   │',
-      \ '│ 0987654321xxx      │                          │',
-      \ '│                    │                          │',
-      \ '├───────── 2/1 ──────┼───────── 2/2 ────────────┤',
-      \ '│                    │ abcdefgh                 │',
-      \ '│                    │ ABCDEFGHI                │',
-      \ '│                    │ QWERTZUIOPASDFGHJKLYXCVBN│',
-      \ '└────────────────────┴──────────────────────────┘']
-  end
-  it 'can align text with + sign'
-    TODO
+  describe 'n_C'
+    it 'TODO#getColumnPosition 1'
+      Expect TODO#getColumnPosition('│123456│', 3) == [0, 7]
+    end
+    "it 'C in the middle of the line'
+      "let l:content = [
+        "\ '┌─────────  1/1  ────┬───────── 1/2 ────────────┐',
+        "\ '│ 123_56             │ abcdef                   │',
+        "\ '├───────── 2/1 ──────┼───────── 2  2 ───────────┤',
+        "\ '│                    │ abcdefgh                 │',
+        "\ '└────────────────────┴──────────────────────────┘']
+      "silent! put! = l:content
+      "execute "normal! /_\<cr>"
+      "execute "normal! Cxxx\<cr>"
+      "Expect "" to_have_content[
+        "\ '┌─────────  1/1  ────┬───────── 1/2 ────────────┐',
+        "\ '│ 123xxx             │ abcdef                   │',
+        "\ '├───────── 2/1 ──────┼───────── 2  2 ───────────┤',
+        "\ '│                    │ abcdefgh                 │',
+        "\ '└────────────────────┴──────────────────────────┘']
+      "Expect getpos('.') == l:pos
+    "end
   end
 end
 
