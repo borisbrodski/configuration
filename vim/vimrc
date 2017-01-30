@@ -330,6 +330,12 @@ nmap <silent> <leader>u vaC<leader>cu
 " Prevent vim from closing. Map :q => :close
 cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
 
+" Russian
+set keymap=russian-jcuken-z
+map! <S-SPACE> <C-^>
+set imsearch=-1
+set iminsert=0
+
 if !empty(glob("$HOME/.vimrc_local-after"))
    source "$HOME/.vimrc_local-after"
 endif
