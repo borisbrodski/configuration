@@ -13,6 +13,8 @@ set hidden
 " <leader>et - edit ~/Desktop/TODO.txt
 " <leader>da - delete alternative buffer
 " <leader>ot - open tag list
+"
+" Fs/Fi/Fd   - fold search
 if !exists("g:reload_count")
   let g:reload_count=1
 else
