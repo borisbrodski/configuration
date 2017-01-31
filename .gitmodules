@@ -95,3 +95,4 @@
 [submodule "vim/bundle/vim-foldsearch"]
 	path = vim/bundle/vim-foldsearch
 	url = https://github.com/embear/vim-foldsearch
+	ignore = dirty

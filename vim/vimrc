@@ -1,18 +1,20 @@
 set hidden
 " Mapping overview
-" <leader>n  -  NERDTree
-" Alt-n      -  NERDTreeFind
-" Ctrl-n     -  multi-cursor
-" F1/S-F1    -  cn/cp
-" F3         -  indent lines toggle
-" F4         -  taglist toggle
-" Shift-F4   -  taglist update
-" F9         -  undo tree
+" <leader>n   -  NERDTree
+" Alt-n       -  NERDTreeFind
+" Ctrl-n      -  multi-cursor
+" F1/S-F1     -  cn/cp
+" F3          -  indent lines toggle
+" F4          -  taglist toggle
+" Shift-F4    -  taglist update
+" F9          -  undo tree
 "
-" <leader>ev - edit .vimrc
-" <leader>et - edit ~/Desktop/TODO.txt
-" <leader>da - delete alternative buffer
-" <leader>ot - open tag list
+" Shift-Space - Change language
+"
+" <leader>ev  - edit .vimrc
+" <leader>et  - edit ~/Desktop/TODO.txt
+" <leader>da  - delete alternative buffer
+" <leader>ot  - open tag list
 "
 " Fs/Fi/Fd   - fold search
 if !exists("g:reload_count")
