@@ -264,6 +264,9 @@ function! YankAllMatched(...) range
   execute a:firstline . ',' . a:lastline . 's//\=AddToRegister(' . l:group . ')/g'
 endfunction
 
+" Copy all matched text to the specified register. Use as an optional
+" argument a regex matching group.
+command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<args>)
 
 " Highlighting
 
