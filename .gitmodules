@@ -96,3 +96,7 @@
 	path = vim/bundle/vim-foldsearch
 	url = https://github.com/embear/vim-foldsearch
 	ignore = dirty
+[submodule "vim/bundle/matchit.zip"]
+	path = vim/bundle/matchit.zip
+	url = https://github.com/vim-scripts/matchit.zip
+	ignore = dirty
