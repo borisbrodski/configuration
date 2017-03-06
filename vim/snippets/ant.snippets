@@ -1,33 +1,36 @@
 extends xml
-snippet <macrodef
+snippet <ma
 	<macrodef name="${1}">
-		<attribute name="${2}" default="${3}"/>
+		<attribute name="${2}"${3: default="$4"}/>
 		<sequential>
 			${0}
 		</sequential>
 	</macrodef>
-snippet <attribute
-	<attribute name="${1}" default="${2}"/>${0}
+snippet <at
+	<attribute name="${1}"${2: default="$4"}/>
+snippet <target
+	<target name="${1}"${2: description="$3"}>
+		${0}
+	</target>
 
 snippet <!-
 	<!--
 	  - ${0}
 	  -->
-
 snippet <if
 	<if>
-		${0}
+		$1
 		<then>
+			${0:${VISUAL}}
 		</then>
 		<else>
 		</else>
 	</if>
-
 snippet <lo
-	<local name="${1}"/>${0}
+	<local name="${1}"/>
 snippet <pr
-	<property name="${1}" value="${2}"/>${0}
+	<property name="${1}" value="${2}"/>$0
 snippet <lp
 	<local name="$1"/>
-	<property name="${1:}" value="${2:}"/>
+	<property name="${1:}" value="${2}"/>$0
 
