@@ -24,6 +24,11 @@ set hidden
 "
 "
 " Ctrl-Shift-Space - Change language
+"
+" DrawIt
+"   -di       - Start
+"   -ds       - Stop
+"   -b, -e, -l, ...
 
 
 if !exists("g:reload_count")

@@ -26,6 +26,33 @@ snippet <if
 		<else>
 		</else>
 	</if>
+snippet <for
+	<for list="$1" param="$2">
+		<sequential>
+			$0
+		</sequential>
+	</for>
+snippet <try-catch
+	<trycatch${1: property="${2:error-message-property}"}>
+		<try>
+			$0
+		</try>
+		<catch>
+			<echo>ERROR: \${${2}}</echo>
+		</catch>
+	</trycatch>
+snippet <try-finally
+	<trycatch${1: property="${2:error-message-property}"}>
+		<try>
+			$0
+		</try>
+		<catch>
+			<echo>ERROR: \${${2}}</echo>
+		</catch>
+		<finally>
+			<echo>Finally</echo>
+		</finally>
+	</trycatch>
 snippet <lo
 	<local name="${1}"/>
 snippet <pr

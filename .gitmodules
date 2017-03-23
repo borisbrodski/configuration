@@ -100,3 +100,7 @@
 	path = vim/bundle/matchit.zip
 	url = https://github.com/vim-scripts/matchit.zip
 	ignore = dirty
+[submodule "vim/bundle/DrawIt"]
+	path = vim/bundle/DrawIt
+	url = https://github.com/vim-scripts/DrawIt.git
+	ignore = dirty
