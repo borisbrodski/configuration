@@ -312,6 +312,38 @@ function! MatchGroupV(index)
   call MatchGroup(a:index, l:pattern)
 endfunction
 
+fun! TabularizeRegion()
+  let l:reg_start = line(".") + 1
+  let l:start_line = getline(".")
+  
+  let l:tab_end = search('TABEND:', 'n')
+  if l:tab_end > 0 && l:tab_end > l:reg_start
+    let l:reg_stop = l:tab_end - 1
+    let l:tab_params = substitute(l:start_line, '\V\.\*TAB: \(/\.\*\)', '\1', '')
+    execute l:reg_start . "," . l:reg_stop "Tabularize " . l:tab_params
+  endif
+endfun
+fun! TabularizeRegions()
+  let l:winview = winsaveview()
+  let l:old_pos = getpos(".")
+  let l:line = line("$")
+  while l:line > 0 && l:line > line("$") - 5
+    if getline(l:line) =~ 'ENABLE_' . 'AUTOTAB'
+      execute "g/TAB:/call TabularizeRegion()"
+      break
+    endif
+    let l:line = l:line - 1
+  endwhile
+  call winrestview(l:winview)
+  call setpos('.', l:old_pos)
+endfun
+augroup TAB_REGS
+  autocmd!
+  autocmd BufWritePre * call TabularizeRegions()
+  autocmd InsertLeave * call TabularizeRegions()
+augroup END
+
+
 nnoremap <silent> 1m :call MatchGroup(1, '\<' . expand("<cword>") . '\>')<cr>
 nnoremap <silent> 2m :call MatchGroup(2, '\<' . expand("<cword>") . '\>')<cr>
 nnoremap <silent> 3m :call MatchGroup(3, '\<' . expand("<cword>") . '\>')<cr>
