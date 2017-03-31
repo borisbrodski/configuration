@@ -68,6 +68,9 @@ if has('gui_running')
     au GUIEnter * simalt ~x
   endif
   set background=dark
+  hi CursorLine guibg=#002b36
+  hi Normal guibg=#001618
+  set cursorline
 else
   set background=light
 endif
@@ -368,6 +371,10 @@ set keymap=russian-jcuken-z
 map! <C-S-SPACE> <C-^>
 set imsearch=-1
 set iminsert=0
+
+" Colors
+
+hi String guifg=#727272
 
 if !empty(glob("$HOME/.vimrc_local-after"))
    source $HOME/.vimrc_local-after
