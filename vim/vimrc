@@ -229,6 +229,10 @@ let g:snipMate = {}
 let g:snipMate.snippet_version=1
 snoremap <BS> <BS>i
 
+" dbext
+let g:dbext_default_history_file=$HOME . '/.dbext-history.txt'
+let g:dbext_default_history_size=1000
+let g:dbext_default_history_max_entry=0
 
 " TODO.txt
 "
@@ -366,7 +370,7 @@ set imsearch=-1
 set iminsert=0
 
 if !empty(glob("$HOME/.vimrc_local-after"))
-   source "$HOME/.vimrc_local-after"
+   source $HOME/.vimrc_local-after
 endif
 
 " let

@@ -104,3 +104,7 @@
 	path = vim/bundle/DrawIt
 	url = https://github.com/vim-scripts/DrawIt.git
 	ignore = dirty
+[submodule "vim/bundle/dbext.vim"]
+	path = vim/bundle/dbext.vim
+	url = https://github.com/lsfxz/dbext.vim.git
+	ignore = dirty
