@@ -41,6 +41,7 @@ let g:pathogen_disabled = []
 let $LANG='C'
 if has('win32')
   language english
+  set rop=type:directx,gamma:1.0,contrast:0.5,level:1,geom:1,renmode:4,taamode:1
 else
   language en_US.UTF-8
 endif
@@ -127,7 +128,7 @@ set mouse=a
 set showcmd
 set ruler
 set laststatus=2
-set statusline=%F%m%r%h%w\ [%{&ff},%{&fileencoding}][%Y][\%03.3b,0x\%02.2B][%l/%L,%v]%p%%
+"set statusline=%F%m%r%h%w\ [%{&ff},%{&fileencoding}][%Y][\%03.3b,0x\%02.2B][%l/%L,%v]%p%%
 set tag+=../tags
 set nostartofline " leave my cursor where it was
 set scrolloff=5 " Keep 5 lines (top/bottom) for scope
@@ -142,6 +143,7 @@ set matchpairs+=<:>
 set modeline
 set modelines=5
 set number
+set ttimeoutlen=50
 
 "set ssop-=folds      " do not store folds in the session
 
@@ -181,6 +183,29 @@ let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.readonly = ''
 let g:airline_symbols.spell = 'Ω'
 let g:airline_symbols.whitespace = '·'
+
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>4 <Plug>AirlineSelectTab4
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>- <Plug>AirlineSelectPrevTab
+nmap <leader>+ <Plug>AirlineSelectNextTab
+
+fun! MyAirLine_DBProfile()
+  return dbext#DB_listOption("profile")
+endfun
+call airline#parts#define_function('db-profile', 'MyAirLine_DBProfile')
+call airline#parts#define_minwidth('db-profile', 10)
+call airline#parts#define_condition('db-profile', 'dbext#DB_listOption("profile") !~ "@askb"')
+let g:airline_section_y = airline#section#create_right(['ffenc','db-profile'])
+
+
 
 " BufExplorer
 nnoremap <C-Tab> :BufExplorer<CR>j
@@ -237,6 +262,10 @@ let g:dbext_default_history_file=$HOME . '/.dbext-history.txt'
 let g:dbext_default_history_size=1000
 let g:dbext_default_history_max_entry=0
 
+nnoremap <silent> <leader>sjs :DBJobStop<CR>
+nnoremap <silent> <leader>es  :e $HOME/.dbext.sql<CR>
+
+
 " TODO.txt
 "
 function! InitTODO()
@@ -265,7 +294,8 @@ augroup MY
   autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
   " autocmd Filetype vim nnoremap <buffer> <SPACE> :execute getline(".")<CR>
 
-  autocmd BufWritePost $MYVIMRC           source $MYVIMRC
+  autocmd BufWritePost $MYVIMRC                    source $MYVIMRC
+  autocmd BufWritePost $HOME/.vimrc_local-after    source $HOME/.vimrc_local-after
 
   autocmd BufNewFile,BufRead *.ahk			  setf autohotkey
   autocmd BufNewFile,BufRead TODO.txt			call InitTODO()
@@ -382,6 +412,7 @@ vnoremap <F5> <ESC>:diffupdate<CR>
 
 " Edit .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>ea :e $HOME/.vimrc_local-after<CR>
 
 " System clipboard
 vnoremap <leader>y "+y

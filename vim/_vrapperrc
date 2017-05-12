@@ -11,6 +11,7 @@ let @s='0v_hyox<ESC>0v_hp$vr}<<kkA<SPACE>x<ESC>r{j_'
 " Surround with comment
 surround c /*\r*/
 surround C <!--<SPACE>\r<SPACE>-->
+surround s '"+\r+"'
 
 set autoindent
 set ignorecase
@@ -83,5 +84,5 @@ imap <c-b> <c-x><c-l>
 command NumberLines _vf/yj_P_W<C-a>
 
 " EXECUTE IMMEDIATE macro
-let @a=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
+let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
 

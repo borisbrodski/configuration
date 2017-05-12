@@ -8,6 +8,8 @@ fun! SmartSpaceN()
     call Switch_to_false()
   elseif @" == 'false'
     call Switch_to_true()
+  elseif getline('.') =~ '^:'
+    execute strpart(getline('.'), 1)
   endif
   let @"=l:b
   call winrestview(l:winview)
