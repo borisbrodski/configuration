@@ -14,6 +14,7 @@ set hidden
 "
 " <leader>ev  - edit .vimrc
 " <leader>et  - edit ~/Desktop/TODO.txt
+" <leader>es  - edit ~/.dbext.sql
 " <leader>da  - delete alternative buffer
 " <leader>ot  - open tag list
 "
@@ -292,6 +293,7 @@ augroup MY
   autocmd Filetype javascript setlocal ts=4 sts=4 sw=4 expandtab
   autocmd Filetype java setlocal ts=4 sts=4 sw=4 expandtab
   autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd Filetype json setlocal ts=4 sts=4 sw=4 noexpandtab
   " autocmd Filetype vim nnoremap <buffer> <SPACE> :execute getline(".")<CR>
 
   autocmd BufWritePost $MYVIMRC                    source $MYVIMRC
@@ -425,6 +427,7 @@ nnoremap <leader>da :bd#<CR>
 
 " Uncomment large block with -u
 nmap <silent> <leader>u vaC<leader>cu
+let g:NERDDefaultAlign='left'
 
 " Prevent vim from closing. Map :q => :close
 cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
