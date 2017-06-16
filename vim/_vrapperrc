@@ -83,6 +83,8 @@ imap <c-b> <c-x><c-l>
 
 command NumberLines _vf/yj_P_W<C-a>
 
+map <F1> <ESC>
+
 " EXECUTE IMMEDIATE macro
 let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
 
