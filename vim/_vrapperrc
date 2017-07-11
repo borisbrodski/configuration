@@ -3,6 +3,9 @@ map gV `[v`]
 map ga :let @a=@"<ENTER>
 map -a :@let @a=@"<enter>
 
+nmap -cf :/<<<<<<<<CR>
+nmap -cd :set noregexsearch<enter>vip:g/<<<<<<</d<enter>vip:g/>>>>>>/d<enter>vip:g/======/d<enter>vip:g/\|\|\|\|\|\|/d<enter>
+
 
 " Smart surround macro
 " let @s='ox<ESC>vr}<<kkA<SPACE><ESC>r{j_'
@@ -17,6 +20,7 @@ set autoindent
 set ignorecase
 set smartcase
 set incsearch
+set noregexsearch
 
 set scrolloff=5
 
