@@ -44,9 +44,6 @@
 [submodule "vim/bundle/vim-snipmate"]
 	path = vim/bundle/vim-snipmate
 	url = https://github.com/garbas/vim-snipmate
-[submodule "vim/bundle/vim-textobject-pack"]
-	path = vim/bundle/vim-textobject-pack
-	url = https://github.com/etdev/vim-textobject-pack
 [submodule "vim/bundle/xmledit"]
 	path = vim/bundle/xmledit
 	url = https://github.com/sukima/xmledit
@@ -108,3 +105,12 @@
 	path = vim/bundle/dbext.vim
 	url = https://github.com/lsfxz/dbext.vim.git
 	ignore = dirty
+[submodule "vim/bundle/vim-wordmotion"]
+	path = vim/bundle/vim-wordmotion
+	url = https://github.com/chaoren/vim-wordmotion
+[submodule "vim/bundle/vim-textobj-user"]
+	path = vim/bundle/vim-textobj-user
+	url = https://github.com/kana/vim-textobj-user.git
+[submodule "vim/bundle/argtextobj.vim"]
+	path = vim/bundle/argtextobj.vim
+	url = https://github.com/vim-scripts/argtextobj.vim

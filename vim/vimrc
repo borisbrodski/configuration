@@ -1,4 +1,5 @@
 set hidden
+
 " Mapping overview
 " <leader>n   -  NERDTree
 " Alt-n       -  NERDTreeFind
@@ -31,6 +32,9 @@ set hidden
 "   -ds       - Stop
 "   -b, -e, -l, ...
 
+
+" vim-wordmotion (CamelCase alternative)
+let g:wordmotion_prefix = 'ö'
 
 if !exists("g:reload_count")
   let g:reload_count=1
@@ -227,6 +231,8 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(so)$',
   \ 'link': 'some_bad_symbolic_links',
   \ }
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=40
 
 " incsearch.vim
 map /  <Plug>(incsearch-forward)
@@ -254,7 +260,7 @@ nnoremap <silent> <leader>ot   :TlistOpen<CR>
 " Snipmate
 "" <TAB> mapped to <ESC>, so use Shift-TAB
 "imap <S-TAB> <Plug>snipMateTrigger
-let g:snipMate = {}
+let g:snipMate = get(g:, 'snipMate', {}) " See https://github.com/garbas/vim-snipmate/issues/220
 let g:snipMate.snippet_version=1
 snoremap <BS> <BS>i
 
@@ -294,6 +300,8 @@ augroup MY
   autocmd Filetype java setlocal ts=4 sts=4 sw=4 expandtab
   autocmd Filetype bash setlocal ts=4 sts=4 sw=4 noexpandtab
   autocmd Filetype json setlocal ts=4 sts=4 sw=4 noexpandtab
+  autocmd Filetype spec setlocal ts=4 sts=4 sw=4 ft=java noexpandtab
+  autocmd Filetype xtend setlocal ts=4 sts=4 sw=4 ft=java noexpandtab
   " autocmd Filetype vim nnoremap <buffer> <SPACE> :execute getline(".")<CR>
 
   autocmd BufWritePost $MYVIMRC                    source $MYVIMRC
