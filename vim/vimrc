@@ -1,13 +1,15 @@
 set hidden
 
 " Mapping overview
-" <leader>n   -  NERDTree
-" Alt-n       -  NERDTreeFind
+" <leader>nn  -  NERDTree
+" <leader>nf  -  NERDTreeFind
 " Ctrl-n      -  multi-cursor
-" F1/S-F1     -  cn/cp
+" Ctrl-x/p    -  multi-cursor (skip/back)
+" F1/Shift-F1 -  cn/cp
 " F3          -  indent lines toggle
 " F4          -  taglist toggle
 " Shift-F4    -  taglist update
+" F6          -  highlight current toggle
 " F9          -  undo tree
 "
 " Space       -  smart-space.vim
@@ -96,8 +98,8 @@ if has('win32')
   set guifont=DejaVu_Sans_Mono_for_Powerline:h10:cANSI
   "set guifont=Hack:h11:cANSI
 endif
-noremap <silent> <leader>n :NERDTreeToggle<cr>
-noremap <silent> <M-n> :NERDTreeFind<cr>
+noremap <silent> <leader>nn :NERDTreeToggle<cr>
+noremap <silent> <leader>nf :NERDTreeFind<cr>
 
 let g:NERDTreeIndicatorMap = {
 	\ "Modified"  : ">",
@@ -242,8 +244,8 @@ map g/ <Plug>(incsearch-stay)
 let g:incsearch#auto_nohlsearch = 1
 map n  <Plug>(incsearch-nohl-n)
 map N  <Plug>(incsearch-nohl-N)
-map *  <Plug>(incsearch-nohl-*)
-map #  <Plug>(incsearch-nohl-#)
+nmap *  <Plug>(incsearch-nohl-*)
+nmap #  <Plug>(incsearch-nohl-#)
 map g* <Plug>(incsearch-nohl-g*)
 map g# <Plug>(incsearch-nohl-g#)
 
@@ -337,6 +339,7 @@ command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<ar
 
 " Highlighting
 
+highlight mygroup0 ctermbg=8 guibg=#0b5163
 highlight mygroup1 ctermbg=blue guibg=blue
 highlight mygroup2 ctermbg=green guibg=brown
 highlight mygroup3 ctermbg=darkgreen guibg=darkgreen
@@ -351,6 +354,81 @@ function! MatchGroupV(index)
   let @"=l:old
   call MatchGroup(a:index, l:pattern)
 endfunction
+
+function! s:get_visual_selection()
+  try
+    let a_save = @a
+    normal! "aygv
+    return @a
+  finally
+    let @a = a_save
+  endtry
+
+    " Source: https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
+    "" Why is this not a built-in Vim script function?!
+    "let [line_start, column_start] = getpos("'<")[1:2]
+    "let [line_end, column_end] = getpos("'>")[1:2]
+    "echom line_start . ":" . column_start . " -> " . line_end . ":" . column_end
+    "let lines = getline(line_start, line_end)
+    "if len(lines) == 0
+    "    return ''
+    "endif
+    "let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    "let lines[0] = lines[0][column_start - 1:]
+    "return join(lines, "\n")
+endfunction
+
+function!s:getHighlightCurrentON()
+  return get(b:, 'HighlightCurrentON', 0)
+endfunction
+function!s:setHighlightCurrentON(newValue)
+  let b:HighlightCurrentON = newValue
+endfunction
+function! HighlightCurrent()
+  if !s:getHighlightCurrentON()
+    return
+  endif
+  if mode() == "v"
+    let l:text = s:get_visual_selection()
+    echom l:text
+    call MatchGroup(0, printf('\V%s', escape(l:text, '/\')))
+  else
+    let l:text = expand('<cword>')
+    call MatchGroup(0, printf('\V\<%s\>', escape(l:text, '/\')))
+  endif
+endfunction
+function! HighlightCurrentToggle()
+  let b:HighlightCurrentON = !s:getHighlightCurrentON()
+  if b:HighlightCurrentON
+    call HighlightCurrent()
+  else
+    execute "0match"
+  endif
+endfunction
+
+nnoremap <silent> <F6> :call HighlightCurrentToggle()<CR>
+augroup HIGHLIGHT_CURRENT
+  autocmd!
+  autocmd CursorMoved * call HighlightCurrent()
+augroup END
+
+nnoremap <silent> 1m :call MatchGroup(1, '\<' . expand("<cword>") . '\>')<cr>
+nnoremap <silent> 2m :call MatchGroup(2, '\<' . expand("<cword>") . '\>')<cr>
+nnoremap <silent> 3m :call MatchGroup(3, '\<' . expand("<cword>") . '\>')<cr>
+nnoremap <silent> 1M :call MatchGroup(1, '\V' . escape(expand("<cword>"), '\'))<cr>
+nnoremap <silent> 2M :call MatchGroup(2, '\V' . escape(expand("<cword>"), '\'))<cr>
+nnoremap <silent> 3M :call MatchGroup(3, '\V' . escape(expand("<cword>"), '\'))<cr>
+
+vnoremap <silent> 1m <ESC>:call MatchGroupV(1)<cr>
+vnoremap <silent> 2m <ESC>:call MatchGroupV(2)<cr>
+vnoremap <silent> 3m <ESC>:call MatchGroupV(3)<cr>
+
+
+nnoremap <silent> 1<c-m> :1match<cr>
+nnoremap <silent> 2<c-m> :2match<cr>
+nnoremap <silent> 3<c-m> :3match<cr>
+
+
 
 fun! TabularizeRegion()
   let l:reg_start = line(".") + 1
@@ -384,21 +462,6 @@ augroup TAB_REGS
 augroup END
 
 
-nnoremap <silent> 1m :call MatchGroup(1, '\<' . expand("<cword>") . '\>')<cr>
-nnoremap <silent> 2m :call MatchGroup(2, '\<' . expand("<cword>") . '\>')<cr>
-nnoremap <silent> 3m :call MatchGroup(3, '\<' . expand("<cword>") . '\>')<cr>
-nnoremap <silent> 1M :call MatchGroup(1, '\V' . escape(expand("<cword>"), '\'))<cr>
-nnoremap <silent> 2M :call MatchGroup(2, '\V' . escape(expand("<cword>"), '\'))<cr>
-nnoremap <silent> 3M :call MatchGroup(3, '\V' . escape(expand("<cword>"), '\'))<cr>
-
-vnoremap <silent> 1m <ESC>:call MatchGroupV(1)<cr>
-vnoremap <silent> 2m <ESC>:call MatchGroupV(2)<cr>
-vnoremap <silent> 3m <ESC>:call MatchGroupV(3)<cr>
-
-
-nnoremap <silent> 1<c-m> :1match<cr>
-nnoremap <silent> 2<c-m> :2match<cr>
-nnoremap <silent> 3<c-m> :3match<cr>
 
 noremap gV `[v`]
 map q: :q
@@ -432,6 +495,7 @@ nnoremap <leader>p "+p
 nnoremap <leader>et :e ~\Desktop\TODO.txt<CR>
 
 nnoremap <leader>da :bd#<CR>
+nnoremap <leader>dd :b#<CR>:bd#<CR>
 
 " Uncomment large block with -u
 nmap <silent> <leader>u vaC<leader>cu
