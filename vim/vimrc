@@ -205,7 +205,13 @@ nmap <leader>- <Plug>AirlineSelectPrevTab
 nmap <leader>+ <Plug>AirlineSelectNextTab
 
 fun! MyAirLine_DBProfile()
-  return dbext#DB_listOption("profile")
+  let l:profile = dbext#DB_listOption("profile")
+  let l:user = dbext#DB_listOption("user")
+  let l:suffix = ''
+  if l:profile != l:user && l:profile != (l:user . "_")
+    let l:suffix = ' (' . l:user . ')'
+  endif
+  return l:profile . l:suffix
 endfun
 call airline#parts#define_function('db-profile', 'MyAirLine_DBProfile')
 call airline#parts#define_minwidth('db-profile', 10)
@@ -274,7 +280,11 @@ let g:dbext_default_history_max_entry=0
 
 nnoremap <silent> <leader>sjs :DBJobStop<CR>
 nnoremap <silent> <leader>es  :e $HOME/.dbext.sql<CR>
-
+fun! DBSetUserAndPassword(name)
+  execute "DBSetOption user=". a:name
+  execute "DBSetOption passwd=". a:name
+endfun
+command! -nargs=1 DBSetUserAndPassword call DBSetUserAndPassword("<args>")
 
 " TODO.txt
 "
