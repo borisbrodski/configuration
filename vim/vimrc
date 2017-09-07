@@ -221,6 +221,7 @@ augroup BUF_EXPLORER
   autocmd BufEnter \[BufExplorer\] nmap <buffer> <TAB> o
   autocmd BufEnter \[BufExplorer\] nmap <buffer> <C-S-TAB> k
 augroup END
+let g:bufExplorerShowNoName=1
 
 " Undo tree
 nnoremap <F9> :UndotreeToggle<cr>
