@@ -339,13 +339,13 @@ command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<ar
 
 " Highlighting
 
-highlight mygroup0 ctermbg=8 guibg=#0b5163
-highlight mygroup1 ctermbg=blue guibg=blue
-highlight mygroup2 ctermbg=green guibg=brown
-highlight mygroup3 ctermbg=darkgreen guibg=darkgreen
+highlight mygroup1  ctermbg=blue guibg=blue
+highlight mygroup2 ctermbg=8 guibg=#08414f
+"highlight mygroup2  ctermbg=green guibg=brown
+highlight mygroup3  ctermbg=darkgreen guibg=darkgreen
 
 function! MatchGroup(index, pattern)
-  execute a:index . 'match myGroup' . a:index . ' /' . a:pattern . '/'
+  execute a:index . 'match mygroup' . a:index . ' /' . a:pattern . '/'
 endfunction
 function! MatchGroupV(index)
   let l:old = @"
@@ -356,12 +356,20 @@ function! MatchGroupV(index)
 endfunction
 
 function! s:get_visual_selection()
+  let l:winview = winsaveview()
+
+  let l:quot_save = getreg('"')
+  let l:quot_save_type = getregtype('"')
+
+  let l:zero_save = getreg("0")
+  let l:zero_save_type = getregtype("0")
   try
-    let a_save = @a
-    normal! "aygv
-    return @a
+    normal! ygv
+    return @"
   finally
-    let @a = a_save
+    call setreg('"', l:quot_save, l:quot_save_type)
+    call setreg("0", l:zero_save, l:zero_save_type)
+    call winrestview(l:winview)
   endtry
 
     " Source: https://stackoverflow.com/questions/1533565/how-to-get-visually-selected-text-in-vimscript
@@ -391,10 +399,10 @@ function! HighlightCurrent()
   if mode() == "v"
     let l:text = s:get_visual_selection()
     echom l:text
-    call MatchGroup(0, printf('\V%s', escape(l:text, '/\')))
+    call MatchGroup(2, printf('\V%s', escape(l:text, '/\')))
   else
     let l:text = expand('<cword>')
-    call MatchGroup(0, printf('\V\<%s\>', escape(l:text, '/\')))
+    call MatchGroup(2, printf('\V\<%s\>', escape(l:text, '/\')))
   endif
 endfunction
 function! HighlightCurrentToggle()
@@ -402,7 +410,7 @@ function! HighlightCurrentToggle()
   if b:HighlightCurrentON
     call HighlightCurrent()
   else
-    execute "0match"
+    execute "2match"
   endif
 endfunction
 
