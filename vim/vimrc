@@ -29,6 +29,8 @@ set hidden
 "
 " Ctrl-Shift-Space - Change language
 "
+" Ctrl-f      - Match table's next `|´ in insert mode
+"
 " DrawIt
 "   -di       - Start
 "   -ds       - Stop
@@ -487,6 +489,29 @@ function! ExecuteMacroOverVisualRange()
   echo "@".getcmdline()
   execute ":'<,'>normal @".nr2char(getchar())
 endfunction
+
+" Put next table's pipe `|´ to match the previous line
+fun! JumpToCharAtPreviousLine(c)
+  if line('.') > 1
+    let l:line_prev = getline(line('.') - 1)
+    let l:line_curr = getline(line('.'))
+    let l:char_pos_curr = strchars(strpart(l:line_curr, 0, getpos('.')[2]))
+
+    if strchars(l:line_prev) <= l:char_pos_curr
+      return ""
+    endif
+
+    let l:pos_prev = strlen(strcharpart(l:line_prev, 0, l:char_pos_curr))
+    let l:c_idx = stridx(l:line_prev, a:c, l:pos_prev)
+    if l:c_idx == -1
+      return ""
+    endif
+    let l:char_pos_prev = strchars(strpart(l:line_prev, 0, l:c_idx))
+    return repeat(' ', l:char_pos_prev - l:char_pos_curr) . a:c
+  endif
+  return ""
+endfun
+imap <c-f>  <c-r>=JumpToCharAtPreviousLine('\|')<cr>
 
 
 noremap gV `[v`]
