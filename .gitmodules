@@ -115,3 +115,6 @@
 [submodule "vim/bundle/argtextobj.vim"]
 	path = vim/bundle/argtextobj.vim
 	url = https://github.com/vim-scripts/argtextobj.vim
+[submodule "vim/bundle/vim-sql-workbench"]
+	path = vim/bundle/vim-sql-workbench
+	url = https://github.com/cosminadrianpopescu/vim-sql-workbench
