@@ -89,6 +89,19 @@ command NumberLines _vf/yj_P_W<C-a>
 
 map <F1> <ESC>
 
+# Cycle plugin
+AddCycleGroup byte Byte
+AddCycleGroup short Short
+AddCycleGroup int Integer
+AddCycleGroup long Long
+AddCycleGroup double Double
+AddCycleGroup float Float
+AddCycleGroup boolean Boolean
+
+AddCycleGroup private protected public
+
+nmap <s-space> <c-a>
+
 " EXECUTE IMMEDIATE macro
 let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
 
