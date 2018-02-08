@@ -118,3 +118,5 @@
 [submodule "vim/bundle/vim-sql-workbench"]
 	path = vim/bundle/vim-sql-workbench
 	url = https://github.com/cosminadrianpopescu/vim-sql-workbench
+	ignore = dirty
+
