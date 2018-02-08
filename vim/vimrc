@@ -35,6 +35,10 @@ set hidden
 "   -di       - Start
 "   -ds       - Stop
 "   -b, -e, -l, ...
+"
+" Edit from slow network share
+" - FromSlowNetwork
+
 
 
 " vim-wordmotion (CamelCase alternative)
@@ -571,6 +575,29 @@ set iminsert=0
 
 hi String guifg=#727272
 
+" FromSlowNetwork
+
+fun! FromSlowNetwork()
+  if !exists("b:OrigPath")
+    let b:OrigPath = expand("%")
+    let l:alt = @#
+    execute "0file!"
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+    let @#=l:alt
+  endif
+endfun
+fun! SaveToSlowNetwork()
+  if exists("b:OrigPath")
+    " execute "write! " . b:OrigPath
+    " execute "0file!"
+    call writefile(getline(1,'$'), b:OrigPath)
+  endif
+endfun
+command! FromSlowNetwork call FromSlowNetwork() 
+" Save for FromSlowNetwork
+cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 && exists("b:OrigPath") ? 'call SaveToSlowNetwork()' : 'w')<CR>
 if !empty(glob("$HOME/.vimrc_local-after"))
    source $HOME/.vimrc_local-after
 endif
