@@ -450,7 +450,12 @@ nnoremap <silent> 1<c-m> :1match<cr>
 nnoremap <silent> 2<c-m> :2match<cr>
 nnoremap <silent> 3<c-m> :3match<cr>
 
-
+" Relative line numbers in insert mode
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
 
 fun! TabularizeRegion()
   let l:reg_start = line(".") + 1
