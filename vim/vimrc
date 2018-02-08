@@ -24,6 +24,11 @@ set hidden
 " <leader>y   - copy to the system clipboard
 " <leader>p   - paste from the system clipboard
 "
+" <leader>dt  - diffthis
+" <leader>do  - diffoff
+" <leader>du  - diffupdate
+"
+"
 " Fs/Fi/Fd    - fold search
 "
 "
@@ -157,12 +162,13 @@ set matchpairs+=<:>
 set modeline
 set modelines=5
 set number
+set relativenumber
 set ttimeoutlen=50
 
 "set ssop-=folds      " do not store folds in the session
 
-set backupdir=~/vimtmp,.
-set directory=~/vimtmp,.
+set backupdir=~/vimtmp
+set directory=~/vimtmp
 
 let g:tex_flavor='tex'
 
@@ -541,8 +547,13 @@ command! ConvertToPLSQL execute "normal! vipU:'<,'>s/\\V\\^\\/\\$//e\<cr>`<vip\<
 nnoremap <silent> <F1> :cnext<CR>
 nnoremap <silent> <S-F1> :cprevious<CR>
 
-nnoremap <F5> :diffupdate<CR>
-vnoremap <F5> <ESC>:diffupdate<CR>
+" Diff mode
+nnoremap <leader>dt :diffthis<CR>
+nnoremap <leader>do :diffoff<CR>
+nnoremap <leader>du :diffupdate<CR>
+vnoremap <leader>dt <ESC>:diffthis<CR>
+vnoremap <leader>do <ESC>:diffoff<CR>
+vnoremap <leader>du <ESC>:diffupdate<CR>
 
 " Edit .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
