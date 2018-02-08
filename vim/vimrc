@@ -255,6 +255,7 @@ let g:ctrlp_custom_ignore = {
   \ }
 let g:ctrlp_max_files=0
 let g:ctrlp_max_depth=40
+let g:ctrlp_match_current_file=1
 
 " incsearch.vim
 map /  <Plug>(incsearch-forward)
