@@ -120,3 +120,6 @@
 	url = https://github.com/cosminadrianpopescu/vim-sql-workbench
 	ignore = dirty
 
+[submodule "vim/bundle/vim-indent-object"]
+	path = vim/bundle/vim-indent-object
+	url = https://github.com/michaeljsmith/vim-indent-object
