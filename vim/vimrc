@@ -45,9 +45,14 @@ set hidden
 " - FromSlowNetwork
 
 
-
-" vim-wordmotion (CamelCase alternative)
-let g:wordmotion_prefix = 'ö'
+" CamelCaseMotion
+call camelcasemotion#CreateMotionMappings('ö')
+omap <silent> ic <Plug>CamelCaseMotion iw
+xmap <silent> ic <Plug>CamelCaseMotion_iw
+omap <silent> ib <Plug>CamelCaseMotion_ib
+xmap <silent> ib <Plug>CamelCaseMotion_ib
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
 
 if !exists("g:reload_count")
   let g:reload_count=1
