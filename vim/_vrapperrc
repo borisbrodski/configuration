@@ -97,11 +97,25 @@ AddCycleGroup long Long
 AddCycleGroup double Double
 AddCycleGroup float Float
 AddCycleGroup boolean Boolean
-
+AddCycleGroup @Nullable @NonNull
 AddCycleGroup private protected public
 
 nmap <s-space> <c-a>
 
+" CamelCaseMotion
+noremap öb <Plug>(subword-back)
+noremap öh <Plug>(subword-back)
+noremap öe <Plug>(subword-end)
+noremap öw <Plug>(subword-word)
+noremap öl <Plug>(subword-word)
+vnoremap ie <Plug>(subword-inner)
+onoremap ie <Plug>(subword-inner)
+vnoremap ic <Plug>(subword-outer)
+onoremap ic <Plug>(subword-outer)
+vnoremap ac <Plug>(subword-outer)
+onoremap ac <Plug>(subword-outer)
+
 " EXECUTE IMMEDIATE macro
 let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
 
+" vim: ft=vim:

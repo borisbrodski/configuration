@@ -17,7 +17,7 @@ set hidden
 "
 " <leader>ev  - edit .vimrc
 " <leader>et  - edit ~/Desktop/TODO.txt
-" <leader>es  - edit ~/.dbext.sql
+" <leader>es  - edit ~/sql/default.sql
 " <leader>da  - delete alternative buffer
 " <leader>ot  - open tag list
 "
@@ -44,15 +44,6 @@ set hidden
 " Edit from slow network share
 " - FromSlowNetwork
 
-
-" CamelCaseMotion
-call camelcasemotion#CreateMotionMappings('ö')
-omap <silent> ic <Plug>CamelCaseMotion iw
-xmap <silent> ic <Plug>CamelCaseMotion_iw
-omap <silent> ib <Plug>CamelCaseMotion_ib
-xmap <silent> ib <Plug>CamelCaseMotion_ib
-omap <silent> ie <Plug>CamelCaseMotion_ie
-xmap <silent> ie <Plug>CamelCaseMotion_ie
 
 if !exists("g:reload_count")
   let g:reload_count=1
@@ -237,6 +228,15 @@ call airline#parts#define_condition('db-profile', 'dbext#DB_listOption("profile"
 let g:airline_section_y = airline#section#create_right(['ffenc','db-profile'])
 
 
+" CamelCaseMotion
+call camelcasemotion#CreateMotionMappings('ö')
+omap <silent> ic <Plug>CamelCaseMotion iw
+xmap <silent> ic <Plug>CamelCaseMotion_iw
+omap <silent> ib <Plug>CamelCaseMotion_ib
+xmap <silent> ib <Plug>CamelCaseMotion_ib
+omap <silent> ie <Plug>CamelCaseMotion_ie
+xmap <silent> ie <Plug>CamelCaseMotion_ie
+
 
 " BufExplorer
 nnoremap <C-Tab> :BufExplorer<CR>j
@@ -298,7 +298,7 @@ let g:dbext_default_history_size=1000
 let g:dbext_default_history_max_entry=0
 
 nnoremap <silent> <leader>sjs :DBJobStop<CR>
-nnoremap <silent> <leader>es  :e $HOME/.dbext.sql<CR>
+nnoremap <silent> <leader>es  :e $HOME/sql/default.sql<CR>
 fun! DBSetUserAndPassword(name)
   execute "DBSetOption user=". a:name
   execute "DBSetOption passwd=". a:name
@@ -470,7 +470,7 @@ nnoremap <silent> 3<c-m> :3match<cr>
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber number
 augroup END
 
 fun! TabularizeRegion()
@@ -615,6 +615,25 @@ endfun
 command! FromSlowNetwork call FromSlowNetwork() 
 " Save for FromSlowNetwork
 cabbrev w <c-r>=(getcmdtype()==':' && getcmdpos()==1 && exists("b:OrigPath") ? 'call SaveToSlowNetwork()' : 'w')<CR>
+
+" SQL-Workbench
+let g:sw_config_dir=$HOME . '/.sqlworkbench'
+"let g:sw_exe='<path-to-sql-workbench>/sql-workbench-build123/sqlwbconsole.cmd'
+let g:sw_tmp=$HOME . '/.cache/sql-workbench/tmp'
+let g:sw_cache=$HOME . '/.cache/sql-workbench'
+if !exists("g:ctrlp_extensions")
+  let g:ctrlp_extensions=[]
+endif
+call add(g:ctrlp_extensions, "sw_profiles")
+fun! SwRefresh()
+  call sw#profiles#update('')
+  SWSqlBufferDisconnect
+  echo "Refreshed"
+endfun
+command! SwRefresh call SwRefresh()
+command! CtrlPSW call ctrlp#init(ctrlp#sw_profiles#id())
+
+
 if !empty(glob("$HOME/.vimrc_local-after"))
    source $HOME/.vimrc_local-after
 endif
