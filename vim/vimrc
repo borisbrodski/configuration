@@ -28,6 +28,8 @@ set hidden
 " <leader>do  - diffoff
 " <leader>du  - diffupdate
 "
+" <leader>ym  - Yank last message into "
+" <leader>pm  - Paste last message
 "
 " Fs/Fi/Fd    - fold search
 "
@@ -40,6 +42,9 @@ set hidden
 "   -di       - Start
 "   -ds       - Stop
 "   -b, -e, -l, ...
+"
+" :YankAllMatched - Copy all matches to "
+" :SumAllMatched  - Sum matched numbers (support range, save reg, match-group)
 "
 " Edit from slow network share
 " - FromSlowNetwork
@@ -111,9 +116,11 @@ else
 endif
 set langmenu=en_US.UTF-8
 
+
 if !empty(glob("$HOME/.vimrc_local-before"))
   source $HOME/.vimrc_local-before
 endif
+
 
 let mapleader="-"
 let maplocalleader="ä"
@@ -157,6 +164,7 @@ if has('win32')
 endif
 noremap <silent> <leader>nn :NERDTreeToggle<cr>
 noremap <silent> <leader>nf :NERDTreeFind<cr>
+let g:NERDDefaultAlign='left'
 
 let g:NERDTreeIndicatorMap = {
 	\ "Modified"  : ">",
@@ -224,57 +232,58 @@ nnoremap <silent> <c-left> :bp<cr>
 "inoremap <TAB> <ESC>
 
 " vim-airline
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-
-
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
-
-" unicode symbols
-
-" powerline symbols
-let g:airline_left_alt_sep = ''
-let g:airline_left_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.crypt = ''
-let g:airline_symbols.linenr = ''
-let g:airline_symbols.maxlinenr = 'Ξ'
-let g:airline_symbols.notexists = 'Σ'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.spell = 'Ω'
-let g:airline_symbols.whitespace = '·'
-
-let g:airline#extensions#tabline#buffer_idx_mode = 1
-nmap <leader>1 <Plug>AirlineSelectTab1
-nmap <leader>2 <Plug>AirlineSelectTab2
-nmap <leader>3 <Plug>AirlineSelectTab3
-nmap <leader>4 <Plug>AirlineSelectTab4
-nmap <leader>5 <Plug>AirlineSelectTab5
-nmap <leader>6 <Plug>AirlineSelectTab6
-nmap <leader>7 <Plug>AirlineSelectTab7
-nmap <leader>8 <Plug>AirlineSelectTab8
-nmap <leader>9 <Plug>AirlineSelectTab9
-nmap <leader>- <Plug>AirlineSelectPrevTab
-nmap <leader>+ <Plug>AirlineSelectNextTab
-
-fun! MyAirLine_DBProfile()
-  let l:profile = dbext#DB_listOption("profile")
-  let l:user = dbext#DB_listOption("user")
-  let l:suffix = ''
-  if l:profile != l:user && l:profile != (l:user . "_")
-    let l:suffix = ' (' . l:user . ')'
-  endif
-  return l:profile . l:suffix
-endfun
-call airline#parts#define_function('db-profile', 'MyAirLine_DBProfile')
-call airline#parts#define_minwidth('db-profile', 10)
-call airline#parts#define_condition('db-profile', 'dbext#DB_listOption("profile") !~ "@askb"')
-let g:airline_section_y = airline#section#create_right(['ffenc','db-profile'])
+let g:airline_highlighting_cache=1
+   let g:airline#extensions#tabline#enabled = 1
+   let g:airline_powerline_fonts = 1
+   
+   
+   if !exists('g:airline_symbols')
+     let g:airline_symbols = {}
+   endif
+   
+   " unicode symbols
+   
+   " powerline symbols
+   let g:airline_left_alt_sep = ''
+   let g:airline_left_sep = ''
+   let g:airline_right_alt_sep = ''
+   let g:airline_right_sep = ''
+   let g:airline_symbols.branch = ''
+   let g:airline_symbols.crypt = ''
+   let g:airline_symbols.linenr = ''
+   let g:airline_symbols.maxlinenr = 'Ξ'
+   let g:airline_symbols.notexists = 'Σ'
+   let g:airline_symbols.paste = 'ρ'
+   let g:airline_symbols.readonly = ''
+   let g:airline_symbols.spell = 'Ω'
+   let g:airline_symbols.whitespace = '·'
+   
+   let g:airline#extensions#tabline#buffer_idx_mode = 1
+   nmap <leader>1 <Plug>AirlineSelectTab1
+   nmap <leader>2 <Plug>AirlineSelectTab2
+   nmap <leader>3 <Plug>AirlineSelectTab3
+   nmap <leader>4 <Plug>AirlineSelectTab4
+   nmap <leader>5 <Plug>AirlineSelectTab5
+   nmap <leader>6 <Plug>AirlineSelectTab6
+   nmap <leader>7 <Plug>AirlineSelectTab7
+   nmap <leader>8 <Plug>AirlineSelectTab8
+   nmap <leader>9 <Plug>AirlineSelectTab9
+   nmap <leader>- <Plug>AirlineSelectPrevTab
+   nmap <leader>+ <Plug>AirlineSelectNextTab
+   
+   fun! MyAirLine_DBProfile()
+     let l:profile = dbext#DB_listOption("profile")
+     let l:user = dbext#DB_listOption("user")
+     let l:suffix = ''
+     if l:profile != l:user && l:profile != (l:user . "_")
+       let l:suffix = ' (' . l:user . ')'
+     endif
+     return l:profile . l:suffix
+   endfun
+   call airline#parts#define_function('db-profile', 'MyAirLine_DBProfile')
+   call airline#parts#define_minwidth('db-profile', 10)
+   call airline#parts#define_condition('db-profile', 'dbext#DB_listOption("profile") !~ "@askb"')
+   let g:airline_section_y = airline#section#create_right(['ffenc','db-profile'])
 
 
 " CamelCaseMotion
@@ -610,6 +619,9 @@ vnoremap <leader>dt <ESC>:diffthis<CR>
 vnoremap <leader>do <ESC>:diffoff<CR>
 vnoremap <leader>du <ESC>:diffupdate<CR>
 
+" Update
+nnoremap <silent> <F5> :if &diff \| diffupdate \| echo "Diff updated" \| else \| syntax sync fromstart \| echo "Syntax updated" \| endif<CR>
+
 " Edit .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>ea :e $HOME/.vimrc_local-after<CR>
@@ -626,7 +638,26 @@ nnoremap <leader>dd :b#<CR>:bd#<CR>
 
 " Uncomment large block with -u
 nmap <silent> <leader>u vaC<leader>cu
-let g:NERDDefaultAlign='left'
+
+" Yank last message to the buffer
+nnoremap  <leader>ym :let @"=""<cr>:redir @"<cr>:1message<cr>:redir END<cr>:let @"=substitute(@", '\V\^\n\+', '', '')<cr>
+nmap  <leader>pm <leader>myp
+
+" Sum matches
+function! SumNumbers(...) range
+  let l:matchingGroup = (a:0 >= 1) ? a:1 : 0
+  let l:reg = (a:0 >= 2) ? a:2[0] : '"'
+  let b:sumNumbersCount = 0
+  fun! Sum(matchingGroup)
+    let b:sumNumbersCount = b:sumNumbersCount + submatch(a:matchingGroup)
+  endfun
+  silent!  execute a:firstline . "," . a:lastline . "s//\\=Sum(" . l:matchingGroup . ")/gn"
+  execute "let @" . l:reg . "=" . b:sumNumbersCount
+  echo "Total: " . b:sumNumbersCount . " (putted in register " . l:reg . ")"
+endfun
+" Sum matched numbers
+" :<range>SumAllMatched [regex-group] [register]
+command! -nargs=* -range=% SumAllMatched <line1>,<line2>call SumNumbers(<f-args>)
 
 " Prevent vim from closing. Map :q => :close
 cabbrev q <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
@@ -670,6 +701,7 @@ let g:sw_config_dir=$HOME . '/.sqlworkbench'
 "let g:sw_exe='<path-to-sql-workbench>/sql-workbench-build123/sqlwbconsole.cmd'
 let g:sw_tmp=$HOME . '/.cache/sql-workbench/tmp'
 let g:sw_cache=$HOME . '/.cache/sql-workbench'
+let g:sw_log_to_file=1 " Write trace files
 if !exists("g:ctrlp_extensions")
   let g:ctrlp_extensions=[]
 endif
@@ -681,6 +713,7 @@ fun! SwRefresh()
 endfun
 command! SwRefresh call SwRefresh()
 command! CtrlPSW call ctrlp#init(ctrlp#sw_profiles#id())
+vmap <leader><c-@> :<c-u>SWSqlExecuteSelected<cr>
 
 
 if !empty(glob("$HOME/.vimrc_local-after"))
@@ -689,6 +722,7 @@ endif
 
 " let
 " @i='?<<<<<<<V/|||||||"aynV/======="bynV/>>>>>>>"cy:tabnew:vsplit:vsplit"apl:enew"bpl:enew"cp:diffthish:diffthish:diffthis:g/<<<<<\||||||\|=====\|>>>>>/dl:g//dl:g//d'
+
 
 " vim: set ts=2 sts=2 sw=2 expandtab:
 "
