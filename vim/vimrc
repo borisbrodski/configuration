@@ -50,7 +50,56 @@ if !exists("g:reload_count")
 else
   let g:reload_count+=1
 endif
-let g:pathogen_disabled = []
+if !has("python")
+  let g:pathogen_disabled = [
+  \ "vim-javacomplete2"
+  \ ]
+else
+  augroup VIM_JAVA_COMPLETE2
+    autocmd FileType java setlocal omnifunc=javacomplete#Complete
+  augroup END
+endif
+let g:pathogen_disabledXXX = [
+ \ "argtextobj.vim",
+ \ "autohotkey-ahk",
+ \ "bufexplorer",
+ \ "camelcasemotion",
+ \ "ctrlp.vim",
+ \ "dbext.vim",
+ \ "DrawIt",
+ \ "fugitive",
+ \ "incsearch.vim",
+ \ "indentline",
+ \ "matchit.zip",
+ \ "nerdcommenter",
+ \ "nerdtree",
+ \ "tabular",
+ \ "taglist.vim",
+ \ "tlib_vim",
+ \ "undotree",
+ \ "vim-colors-solarized",
+ \ "vim-surround",
+ \ "vim-textobj-comment",
+ \ "vim-textobj-line",
+ \ "vim-textobj-user",
+ \ "vim-vspec",
+ \ "vimtex",
+ \ "vim-multiple-cursors",
+ \ "vim-repeat",
+ \ "vim-snipmate",
+ \ "vim-snippets",
+ \ "vim-sql-workbench",
+ \
+ \ "vim-addon-mw-utils",
+ \ "vim-exchange",
+ \ "vim-foldsearch",
+ \ "vim-indent-object",
+ \ "xmledit",
+ \ "vim-airline-themes",
+ \ "vim-airline",
+ \ ""]
+let g:pathogen_disabled = [
+ \ ]
 
 let $LANG='C'
 if has('win32')

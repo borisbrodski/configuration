@@ -123,3 +123,6 @@
 [submodule "vim/bundle/camelcasemotion"]
 	path = vim/bundle/camelcasemotion
 	url = https://github.com/bkad/camelcasemotion
+[submodule "vim/bundle/vim-javacomplete2"]
+	path = vim/bundle/vim-javacomplete2
+	url = https://github.com/artur-shaik/vim-javacomplete2.git
