@@ -78,6 +78,10 @@ vnoremap * y:set noregexsearch<enter>:let @/=@"<enter>n
 " Line completion
 imap <c-b> <c-x><c-l>
 
+" Insert variable name based on type
+" test(StringBuilder <|>) => test(StringBuilder stringBuilder)
+nmap -ip m.ByE`.pb~e
+
 " vmap <space> S)iconvert<ESC>
 " nmap <space> viaS)iconvert<ESC>
 " map <space> :retab<enter>:wq<ENTER>
