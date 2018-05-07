@@ -89,7 +89,8 @@ nmap -ip m.ByE`.pb~e
 " map <space>a <esc>viwyllve
 " map <space>b o@Index(name = "<esc>pa")<esc>
 
-command NumberLines _vf/yj_P_W<C-a>
+" ???
+" command NumberLines _vf/yj_P_W<C-a>
 
 map <F1> <ESC>
 
@@ -116,8 +117,12 @@ vnoremap ie <Plug>(subword-inner)
 onoremap ie <Plug>(subword-inner)
 vnoremap ic <Plug>(subword-outer)
 onoremap ic <Plug>(subword-outer)
+vnoremap ib <Plug>(subword-outer)
+onoremap ib <Plug>(subword-outer)
 vnoremap ac <Plug>(subword-outer)
 onoremap ac <Plug>(subword-outer)
+vnoremap ab <Plug>(subword-outer)
+onoremap ab <Plug>(subword-outer)
 
 " EXECUTE IMMEDIATE macro
 let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
