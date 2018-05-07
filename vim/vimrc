@@ -151,6 +151,11 @@ filetype plugin indent on
 " TEST IT
 set encoding=UTF-8
 
+" Stop VIM beeping on errors
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
 
 " Set GUI font
 " :redir @a
