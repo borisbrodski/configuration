@@ -605,6 +605,13 @@ map q: :q
 " Redmine table aligner
 command! -range=% AlignRedmineTable <line1>,<line2>Tabularize /.[^|]*\zs|
 
+" Plugin: https://github.com/junegunn/vim-easy-align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 " ---- C++ ----
 
 " Enter GUI (Generate GUIDd: https://www.guidgen.com/)
