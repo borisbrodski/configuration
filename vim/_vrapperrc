@@ -3,8 +3,10 @@ map gV `[v`]
 map ga :let @a=@"<ENTER>
 map -a :@let @a=@"<enter>
 
-nmap -cf :/<<<<<<<<CR>
-nmap -cd :set noregexsearch<enter>vip:g/<<<<<<</d<enter>vip:g/>>>>>>/d<enter>vip:g/======/d<enter>vip:g/\|\|\|\|\|\|/d<enter>
+noremap -cf :set regexsearch<enter>:/<<<<<<<|=======|>>>>>>>|\|\|\|\|\|\|\|<enter>n
+"noremap -fc :set noregexsearch<enter>:/<<<<<<<\|=======<enter>n
+noremap -cd :set regexsearch<enter>:g/(>>>>>>>|=======|<<<<<<<|\|\|\|\|\|\|\|)/d<enter>
+"noremap -cd :set noregexsearch<enter>vip:g/<<<<<<</d<enter>vip:g/>>>>>>/d<enter>vip:g/======/d<enter>vip:g/\|\|\|\|\|\|/d<enter>
 
 
 " Smart surround macro
@@ -126,5 +128,6 @@ onoremap ab <Plug>(subword-outer)
 
 " EXECUTE IMMEDIATE macro
 let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>
+
 
 " vim: ft=vim:
