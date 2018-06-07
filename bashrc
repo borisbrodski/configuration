@@ -34,7 +34,7 @@ function upload_on_change {
     UPLOAD_URL="$2"
     CHECK_SLEEP=1
 
-	echo "Upload '$FILE_TO_MONITOR' to '$UPLOAD_URL' on change..."
+    echo "Upload '$FILE_TO_MONITOR' to '$UPLOAD_URL' on change..."
     echo "Checking every ${CHECK_SLEEP}s"
 
     OLD_HASH=""
@@ -66,7 +66,7 @@ function upload_on_change {
             fi
         done
         if [[ "$NEW_HASH" != "" && "$OLD_HASH" != "$NEW_HASH" ]] ; then
-            echo "Uploading $FILE_TO_MONITOR to $UPLOAD_URL"
+            echo "$(date "+%F %T") Uploading $FILE_TO_MONITOR to $UPLOAD_URL"
             scp "$FILE_TO_MONITOR" "$UPLOAD_URL"
             which cmd.exe > /dev/null 2>&1 && cmd '/c rundll32.exe cmdext.dll,MessageBeepStub '
             #which cmd.exe > /dev/null 2>&1 && cmd '/c rundll32 user32.dll,MessageBeep '
@@ -76,3 +76,8 @@ function upload_on_change {
     done
 }
 
+function ps-mem {
+    ps -eo size,pid,user,command --sort -size | awk '{ hr=$1/1024 ; printf("%13.2f Mb ",hr) } { for ( x=2 ; x<=NF ; x++ ) { printf("%s ",$x) } print "" }' |cut -d "" -f2 | cut -d "-" -f1 | less
+}
+
+# vim: set ts=4 sts=4 sw=4 expandtab:
