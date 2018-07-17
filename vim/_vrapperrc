@@ -109,22 +109,33 @@ AddCycleGroup private protected public
 
 nmap <s-space> <c-a>
 
+" HelloWorldFromTheOtherWorld
+" hello_world_from_the_other_world
 " CamelCaseMotion
 noremap öb <Plug>(subword-back)
 noremap öh <Plug>(subword-back)
 noremap öe <Plug>(subword-end)
 noremap öw <Plug>(subword-word)
 noremap öl <Plug>(subword-word)
-vnoremap ie <Plug>(subword-inner)
-onoremap ie <Plug>(subword-inner)
-vnoremap ic <Plug>(subword-outer)
-onoremap ic <Plug>(subword-outer)
-vnoremap ib <Plug>(subword-outer)
-onoremap ib <Plug>(subword-outer)
-vnoremap ac <Plug>(subword-outer)
-onoremap ac <Plug>(subword-outer)
-vnoremap ab <Plug>(subword-outer)
-onoremap ab <Plug>(subword-outer)
+
+vnoremap iö <Plug>(subword-inner)
+onoremap iö <Plug>(subword-inner)
+vnoremap aö <Plug>(subword-outer)
+onoremap aö <Plug>(subword-outer)
+
+"vnoremap ie <Plug>(subword-inner)
+"onoremap ie <Plug>(subword-inner)
+"vnoremap ic <Plug>(subword-outer)
+"onoremap ic <Plug>(subword-outer)
+"vnoremap ib <Plug>(subword-outer)
+"onoremap ib <Plug>(subword-outer)
+"vnoremap ac <Plug>(subword-outer)
+"onoremap ac <Plug>(subword-outer)
+"vnoremap ab <Plug>(subword-outer)
+"onoremap ab <Plug>(subword-outer)
+
+# Jump to the end of the line
+map ä g_
 
 " EXECUTE IMMEDIATE macro
 let @e=vipUvip<ESC><ESC>iEXECUTE<S-SPACE>IMMEDIATE<S-SPACE>'<ESC>`<GT>a';<ESC>:.s/\///<ENTER>

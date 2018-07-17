@@ -313,12 +313,12 @@ let g:airline_highlighting_cache=1
 
 " CamelCaseMotion
 call camelcasemotion#CreateMotionMappings('ö')
-omap <silent> ic <Plug>CamelCaseMotion iw
-xmap <silent> ic <Plug>CamelCaseMotion_iw
+omap <silent> aö <Plug>CamelCaseMotion iw
+xmap <silent> aö <Plug>CamelCaseMotion_iw
 omap <silent> ib <Plug>CamelCaseMotion_ib
 xmap <silent> ib <Plug>CamelCaseMotion_ib
-omap <silent> ie <Plug>CamelCaseMotion_ie
-xmap <silent> ie <Plug>CamelCaseMotion_ie
+omap <silent> iö <Plug>CamelCaseMotion_ie
+xmap <silent> iö <Plug>CamelCaseMotion_ie
 
 
 " BufExplorer
