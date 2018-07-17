@@ -3,9 +3,9 @@ map gV `[v`]
 map ga :let @a=@"<ENTER>
 map -a :@let @a=@"<enter>
 
-noremap -cf :set regexsearch<enter>:/<<<<<<<|=======|>>>>>>>|\|\|\|\|\|\|\|<enter>n
+noremap -cf :set regexsearch<enter>:/^(<<<<<<< |=======$|>>>>>>> |\|\|\|\|\|\|\| )<enter>n
 "noremap -fc :set noregexsearch<enter>:/<<<<<<<\|=======<enter>n
-noremap -cd :set regexsearch<enter>:g/(>>>>>>>|=======|<<<<<<<|\|\|\|\|\|\|\|)/d<enter>
+noremap -cd :set regexsearch<enter>:g/^(>>>>>>> |=======$|<<<<<<< |\|\|\|\|\|\|\| )/d<enter>
 "noremap -cd :set noregexsearch<enter>vip:g/<<<<<<</d<enter>vip:g/>>>>>>/d<enter>vip:g/======/d<enter>vip:g/\|\|\|\|\|\|/d<enter>
 
 

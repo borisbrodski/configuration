@@ -668,6 +668,10 @@ nnoremap <leader>et :e ~\Desktop\TODO.txt<CR>
 nnoremap <leader>da :bd#<CR>
 nnoremap <leader>dd :b#<CR>:bd#<CR>
 
+" Diff mappings
+noremap <leader>cf :/\V\^\(<<<<<<< \\|=======\$\\|>>>>>>> \\|\|\|\|\|\|\|\| \)<CR>
+noremap <leader>cd :g/\V\^\(<<<<<<< \\|=======\$\\|>>>>>>> \\|\|\|\|\|\|\|\| \)/d<CR>
+
 " Uncomment large block with -u
 nmap <silent> <leader>u vaC<leader>cu
 
