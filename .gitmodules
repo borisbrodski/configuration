@@ -129,3 +129,7 @@
 [submodule "vim/bundle/vim-easy-align"]
 	path = vim/bundle/vim-easy-align
 	url = https://github.com/junegunn/vim-easy-align
+[submodule "vim/bundle/visualrepeat"]
+	path = vim/bundle/visualrepeat
+	url = https://github.com/vim-scripts/visualrepeat.git
+	ignore = dirty

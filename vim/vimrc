@@ -46,8 +46,28 @@ set hidden
 " :YankAllMatched - Copy all matches to "
 " :SumAllMatched  - Sum matched numbers (support range, save reg, match-group)
 "
+"
 " Edit from slow network share
 " - FromSlowNetwork
+"
+"
+" DB (vim-sql-workbench)
+" Connect: :CtrlPSW
+" - <leader><ctrl>+2  - execute current or selected query
+" - <leader>ee        - execute entire file with alternative delimiters
+"
+"
+" Cool text objects:
+" - ic / ac      - comments
+" - iö / aö / ib - camelcase
+" - ii / ai      - intent based (for layout languages, like python, haskell)
+" - ia / ai      - argument block
+"
+" EasyAlign
+" ga - start
+" <Ctrl>+P - live
+" <Ctrl>+G - ignore groups, like comments
+" <Ctrl>+X - enter regex, repeat - execute align in live mode
 
 
 if !exists("g:reload_count")
