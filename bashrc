@@ -1,5 +1,7 @@
 export EDITOR=vim
 
+set -o vi
+
 #alias ll='ls -l'
 #alias la='ls -la'
 alias lf='ls -F'
