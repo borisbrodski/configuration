@@ -60,4 +60,21 @@ snippet <pr
 snippet <lp
 	<local name="$1"/>
 	<property name="${1:}" value="${2}"/>$0
+snippet <cond
+	<condition property="${1}" value="${2}" ${3: else="$4"}>
+		$0
+	</condition>
+snippet <cond-length
+	<length string="${1:}" trim="${2:true}" when="${3:greater}" length="${4}"/>
+
+snippet <cond-matches
+	<matches string="${1:}" pattern="${2:}" casesensitive="${3:true}"/>${4: <!-- also multiline:bool, singleline:bool -->}${0}
+snippet <cond-isset
+	<isset property="${1}"/>${0}
+snippet <exec
+	<exec executable="${1}" dir="${2}" outputproperty="${3:output}" failifexecutionfails="${4:true}" failonerror="$4" logError="true">
+		<arg value="${5}"/>
+		${0}
+	</exec>
+
 
