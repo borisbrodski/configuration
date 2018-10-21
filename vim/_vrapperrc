@@ -1,4 +1,5 @@
 vmap Y ygv<esc>
+nmap Y y$
 map gV `[v`]
 map ga :let @a=@"<ENTER>
 map -a :@let @a=@"<enter>
