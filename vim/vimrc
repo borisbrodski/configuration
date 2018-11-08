@@ -146,7 +146,7 @@ endif
 
 
 let mapleader="-"
-let maplocalleader="ä"
+let maplocalleader="ü"
 
 execute pathogen#infect()
 Helptags
@@ -391,6 +391,21 @@ fun! DBSetUserAndPassword(name)
 endfun
 command! -nargs=1 DBSetUserAndPassword call DBSetUserAndPassword("<args>")
 
+" vim-indentwise
+let g:indentwise_suppress_keymaps=1
+map ö- <Plug>(IndentWisePreviousLesserIndent)
+map öö <Plug>(IndentWisePreviousEqualIndent)
+map ö+ <Plug>(IndentWisePreviousGreaterIndent)
+map ä- <Plug>(IndentWiseNextLesserIndent)
+map ää <Plug>(IndentWiseNextEqualIndent)
+map ä+ <Plug>(IndentWiseNextGreaterIndent)
+map ö_ <Plug>(IndentWisePreviousAbsoluteIndent)
+map ä_ <Plug>(IndentWiseNextAbsoluteIndent)
+map ö% <Plug>(IndentWiseBlockScopeBoundaryBegin)
+map ä% <Plug>(IndentWiseBlockScopeBoundaryEnd)
+
+
+
 " TODO.txt
 "
 function! InitTODO()
@@ -509,8 +524,8 @@ function! s:get_visual_selection()
     normal! ygv
     return @"
   finally
-    call setreg('"', l:quot_save, l:quot_save_type)
     call setreg("0", l:zero_save, l:zero_save_type)
+    call setreg('"', l:quot_save, l:quot_save_type)
     call winrestview(l:winview)
   endtry
 
@@ -565,9 +580,13 @@ augroup HIGHLIGHT_CURRENT
 augroup END
 function! HighlightCurrentTimer(id)
   let b:highlight_old_mode = get(b:, 'highlight_old_mode', '')
-  if b:highlight_old_mode !=# mode()
+  let b:visual_start = get(b:, 'visual_start', [0,0,0,0])
+  let b:visual_end = get(b:, 'visual_end', [0,0,0,0])
+  if b:highlight_old_mode !=# mode() || b:visual_start != getpos("'<'") || b:visual_end != getpos("'>'")
     silent call HighlightCurrent()
     let b:highlight_old_mode = mode()
+    let b:visual_start = getpos("'<'")
+    let b:visual_end = getpos("'>'")
   endif
 endfunction
 if get(g:, 'highlight_timer_id', 0)
