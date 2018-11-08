@@ -133,3 +133,6 @@
 	path = vim/bundle/visualrepeat
 	url = https://github.com/vim-scripts/visualrepeat.git
 	ignore = dirty
+[submodule "vim/bundle/vim-indentwise"]
+	path = vim/bundle/vim-indentwise
+	url = https://github.com/jeetsukumaran/vim-indentwise.git
