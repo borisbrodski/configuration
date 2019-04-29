@@ -87,6 +87,7 @@ else
     autocmd FileType java setlocal omnifunc=javacomplete#Complete
   augroup END
 endif
+call add(g:pathogen_disabled, 'vim-sql-workbench')
 let g:pathogen_disabledXXX = [
  \ "argtextobj.vim",
  \ "autohotkey-ahk",
@@ -126,8 +127,6 @@ let g:pathogen_disabledXXX = [
  \ "vim-airline-themes",
  \ "vim-airline",
  \ ""]
-let g:pathogen_disabled = [
- \ ]
 
 let $LANG='C'
 if has('win32')
@@ -818,7 +817,7 @@ let g:sw_log_to_file=1 " Write trace files
 if !exists("g:ctrlp_extensions")
   let g:ctrlp_extensions=[]
 endif
-call add(g:ctrlp_extensions, "sw_profiles")
+"call add(g:ctrlp_extensions, "sw_profiles")
 "fun! SwRefresh()
 "  call sw#profiles#update('')
 "  SWSqlBufferDisconnect
