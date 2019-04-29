@@ -73,21 +73,21 @@ set hidden
 " <Ctrl>+X - enter regex, repeat - execute align in live mode
 
 
+let g:pathogen_disabled = []
 if !exists("g:reload_count")
   let g:reload_count=1
 else
   let g:reload_count+=1
 endif
 if !has("python")
-  let g:pathogen_disabled = [
-  \ "vim-javacomplete2"
-  \ ]
+  let g:pathogen_disabled = g:pathogen_disabled + [ "vim-javacomplete2" ]
 else
   augroup VIM_JAVA_COMPLETE2
     autocmd FileType java setlocal omnifunc=javacomplete#Complete
   augroup END
 endif
 call add(g:pathogen_disabled, 'vim-sql-workbench')
+
 let g:pathogen_disabledXXX = [
  \ "argtextobj.vim",
  \ "autohotkey-ahk",
