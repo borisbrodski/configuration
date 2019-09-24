@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renewal>
+	<plugin guid="{9297F37D-0EE3-4F91-ADC1-675C9BED9E48}">
+		<url arch="any">http://code.google.com/p/farplugs/downloads/list</url>
+		<home arch="any">http://code.google.com/p/farplugs</home>
+		<changelog arch="any">http://farplugs.googlecode.com/svn/trunk/Hexitor/dist/ChangeLog</changelog>
+		<regex arch="x64">//farplugs\.googlecode\.com/files/FarHexitor_(\d+)\.(\d+)\.(\d+)\.(\d+)_x64\.zip</regex>
+		<regex arch="x86">//farplugs\.googlecode\.com/files/FarHexitor_(\d+)\.(\d+)\.(\d+)\.(\d+)_x86\.zip</regex>
+		<srcpath arch="any">Hexitor</srcpath>
+	</plugin>
+</renewal>

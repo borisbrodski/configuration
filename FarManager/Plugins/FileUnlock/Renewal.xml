@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<renewal>
+	<plugin guid="{F39EFDBF-A2E3-44F5-B4DF-519548A62BF9}">
+		<url arch="any">http://code.google.com/p/farplugs/downloads/list</url>
+		<home arch="any">http://code.google.com/p/farplugs</home>
+		<changelog arch="any">http://farplugs.googlecode.com/svn/trunk/FileUnlock/dist/ChangeLog</changelog>
+		<regex arch="x64">//farplugs\.googlecode\.com/files/FarFileUnlock_(\d+)\.(\d+)\.(\d+)\.(\d+)_x64\.zip</regex>
+		<regex arch="x86">//farplugs\.googlecode\.com/files/FarFileUnlock_(\d+)\.(\d+)\.(\d+)\.(\d+)_x86\.zip</regex>
+		<srcpath arch="any">FileUnlock</srcpath>
+	</plugin>
+</renewal>
