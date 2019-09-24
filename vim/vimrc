@@ -72,6 +72,10 @@ set hidden
 " <Ctrl>+P - live
 " <Ctrl>+G - ignore groups, like comments
 " <Ctrl>+X - enter regex, repeat - execute align in live mode
+"
+" XML
+" -cx -cX  - close XML tag
+"  -cwa    - wrap attributes vertically
 
 
 if !exists("g:reload_count")
@@ -800,15 +804,24 @@ vnoremap <silent> <leader>cF :<c-u>let @/='\V\^\(<<<<<<< \\|=======\$\\|>>>>>>> 
 nmap <silent> <leader>u vaC<leader>cu
 
 " Yank last message to the buffer
-nnoremap  <leader>ym :let @"=""<cr>:redir @"<cr>:1message<cr>:redir END<cr>:let @"=substitute(@", '\V\^\n\+', '', '')<cr>
-nmap  <leader>pm <leader>myp
+nnoremap <silent> <leader>ym :let @"=""<cr>:redir @"<cr>:1message<cr>:redir END<cr>:let @"=substitute(@", '\v^\_s+\|\_s+$', '', 'g') \| call setreg('"', @", 'v')<cr>
+nmap <silent> <leader>pm <leader>ymp
+nmap <silent> <leader>pMc <leader>ym:let @"=substitute(@", '\v^([0-9]+)\s.*', '\1', '')<cr>p
 
 " XML mappings
 augroup XMLmappings
   autocmd!
-  autocmd FileType ant nnoremap <leader>xc a</<c-x><c-o><esc>
-  autocmd FileType xml nnoremap <leader>xc a</<c-x><c-o><esc>
+  autocmd FileType ant nnoremap <leader>xC a</<c-x><c-o><esc>
+  autocmd FileType xml nnoremap <leader>xC a</<c-x><c-o><esc>
+  autocmd FileType ant nnoremap <leader>xc o<esc>a</<c-x><c-o><esc>
+  autocmd FileType xml nnoremap <leader>xc o<esc>a</<c-x><c-o><esc>
+  autocmd FileType xhtml set ft=xml
+
+  " Wrap attibutes of a tag
+  autocmd FileType xml nmap <silent> <leader>xwa :set lazyredraw\|let s=@/\|let p=getpos('.')<CR>:.s/\V \+\(\/\?>\)\s\*\$/\1/e<CR>:.s/\v(^\s*\S([^"]\|"[^"]*")*)@<=\s+/\r/ge<CR>:let @/=s<CR>gV=:call setpos('.',p)<CR>==:call setpos('.',p)\|set nolazyredraw<CR>
 augroup END
+
+
 
 " Sum matches
 function! SumNumbers(...) range
