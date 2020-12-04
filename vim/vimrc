@@ -560,7 +560,7 @@ nnoremap <silent> <F6> :call HighlightCurrentToggle()<CR>
 vnoremap <silent> <F6> :<C-U>call HighlightCurrentToggle()<CR>gv
 augroup HIGHLIGHT_CURRENT
   autocmd!
-  autocmd CursorMoved * silent call HighlightCurrent()
+  "autocmd CursorMoved * silent call HighlightCurrent()
 augroup END
 function! HighlightCurrentTimer(id)
   let b:highlight_old_mode = get(b:, 'highlight_old_mode', '')
