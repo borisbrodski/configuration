@@ -17,7 +17,8 @@ let @s='0v_hyox<ESC>0v_hp$vr}<<kkA<SPACE>x<ESC>r{j_'
 " Surround with comment
 surround c /*\r*/
 surround C <!--<SPACE>\r<SPACE>-->
-surround s '"+\r+"'
+
+surround s '"<space>+<space>\r<space>+<space>"'
 
 set autoindent
 set ignorecase

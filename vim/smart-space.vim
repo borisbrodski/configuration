@@ -1,15 +1,15 @@
 fun! SmartSpaceN()
+  let l:replace_text = { 'true': 'false', 'True': 'False', 'TRUE': 'FALSE' }
+  for v in keys(l:replace_text)
+    let l:replace_text[l:replace_text[v]] = v
+  endfor
   let l:cmd = '0'
   let l:winview = winsaveview()
   let l:old_pos = getpos(".")
   let l:b = @"
   normal yiw
-  if @" == 'true'
-    call Switch_to_false()
-  elseif @" == 'false'
-    call Switch_to_true()
-  elseif getline('.') =~ '^:'
-    execute strpart(getline('.'), 1)
+  if has_key(l:replace_text, @")
+    call Switch_to_text(l:replace_text[@"])
   endif
   let @"=l:b
   call winrestview(l:winview)
@@ -17,12 +17,8 @@ fun! SmartSpaceN()
   call eval(l:cmd)
 endfun
 
-fun! Switch_to_true()
-  execute "normal! ciwtrue\<esc>"
-endfun
-
-fun! Switch_to_false()
-  execute "silent! normal! ciwfalse\<esc>"
+fun! Switch_to_text(text)
+  execute "normal! ciw" . a:text . "\<esc>"
 endfun
 
 "augroup PROPERTY

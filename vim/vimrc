@@ -10,6 +10,7 @@ set hidden
 " F4          -  taglist toggle
 " Shift-F4    -  taglist update
 " F6          -  highlight current toggle. See also 1-9m
+" F7          -  toggle background (dark / light)
 " F9          -  undo tree
 "
 " Space       -  smart-space.vim
@@ -71,6 +72,10 @@ set hidden
 " <Ctrl>+P - live
 " <Ctrl>+G - ignore groups, like comments
 " <Ctrl>+X - enter regex, repeat - execute align in live mode
+"
+" XML
+" -cx -cX  - close XML tag
+"  -cwa    - wrap attributes vertically
 
 
 let g:pathogen_disabled = []
@@ -145,7 +150,7 @@ endif
 
 
 let mapleader="-"
-let maplocalleader="ä"
+let maplocalleader="ü"
 
 execute pathogen#infect()
 Helptags
@@ -154,6 +159,32 @@ if g:reload_count == 1
   syntax enable
 endif
 
+" Highlighting
+let g:highlight_cmds_dark = []
+let g:highlight_cmds_light = []
+fun! AddHighlight(highlight_dark_cmd, ...)
+  let l:highlight_light_cmd = a:0 >= 1 ? a:1 : a:highlight_dark_cmd
+  if strlen(a:highlight_dark_cmd) > 0
+    call add(g:highlight_cmds_dark, a:highlight_dark_cmd)
+  endif
+  if strlen(l:highlight_light_cmd)
+    call add(g:highlight_cmds_light, l:highlight_light_cmd)
+  endif
+endfun
+fun! SetHighlight()
+  if &background == 'dark'
+    for cmd in g:highlight_cmds_dark
+      execute cmd
+    endfor
+  else
+    for cmd in g:highlight_cmds_light
+      execute cmd
+    endfor
+  endif
+endfun
+" Toggle background
+map <silent> <F7> :let &background = ( &background == "dark"? "light" : "dark" ) \| call SetHighlight()<CR>
+
 if has('gui_running')
   colorscheme solarized
   " set guioptions-=T  " no toolbar
@@ -161,9 +192,11 @@ if has('gui_running')
     set encoding=UTF-8
     au GUIEnter * simalt ~x
   endif
+  call AddHighlight('hi CursorLine guibg=#002b36', '')
+  call AddHighlight('hi Normal guibg=#000000', '')
   set background=dark
-  hi CursorLine guibg=#002b36
-  hi Normal guibg=#001618
+  "set background=light
+  "hi Normal guibg=#001618
   set cursorline
 else
   set background=light
@@ -244,6 +277,11 @@ set modelines=5
 set number
 set relativenumber
 set ttimeoutlen=50
+set listchars=tab:▸\ ,eol:¬
+set list
+set selection=old
+call AddHighlight('highlight NonText guifg=#2b2c38 guibg=NONE')
+call AddHighlight('highlight SpecialKey guifg=#2b2c38 guibg=NONE')
 
 "set ssop-=folds      " do not store folds in the session
 
@@ -390,6 +428,21 @@ fun! DBSetUserAndPassword(name)
 endfun
 command! -nargs=1 DBSetUserAndPassword call DBSetUserAndPassword("<args>")
 
+" vim-indentwise
+let g:indentwise_suppress_keymaps=1
+map ö- <Plug>(IndentWisePreviousLesserIndent)
+map öö <Plug>(IndentWisePreviousEqualIndent)
+map ö+ <Plug>(IndentWisePreviousGreaterIndent)
+map ä- <Plug>(IndentWiseNextLesserIndent)
+map ää <Plug>(IndentWiseNextEqualIndent)
+map ä+ <Plug>(IndentWiseNextGreaterIndent)
+map ö_ <Plug>(IndentWisePreviousAbsoluteIndent)
+map ä_ <Plug>(IndentWiseNextAbsoluteIndent)
+map ö% <Plug>(IndentWiseBlockScopeBoundaryBegin)
+map ä% <Plug>(IndentWiseBlockScopeBoundaryEnd)
+
+
+
 " TODO.txt
 "
 function! InitTODO()
@@ -454,17 +507,18 @@ endfunction
 command! -nargs=? -range=% YankAllMatched <line1>,<line2>call YankAllMatched(<args>)
 
 " Highlighting
-highlight MyCurrentWord  ctermbg=8 guibg=#08414f
+call AddHighlight('highlight MyCurrentWord ctermbg=8 guibg=#08414f', 'highlight MyCurrentWord ctermbg=8 guibg=LightGrey')
 
-highlight MyGroup1 ctermbg=blue guibg=blue
-highlight MyGroup2 term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen
-highlight MyGroup3 ctermbg=darkgreen guibg=darkgreen
-highlight MyGroup4 term=reverse ctermfg=0 ctermbg=14 gui=reverse guifg=#eee8d5 guibg=#073642
-highlight MyGroup5 term=reverse gui=reverse guifg=#586e75
-highlight MyGroup6 term=bold gui=bold guifg=#93a1a1 guibg=#002b36
-highlight MyGroup7 term=standout gui=standout guifg=#6c71c4
-highlight MyGroup8 term=bold cterm=bold ctermfg=241 ctermbg=136 gui=bold guifg=#657b83 guibg=#b58900
-highlight MyGroup9 term=bold ctermfg=14 gui=bold,underline guifg=Yellow
+call AddHighlight('highlight MyGroup1 ctermbg=blue guibg=blue',
+                \ 'highlight MyGroup1 term=reverse gui=reverse guifg=#268bd2')
+call AddHighlight('highlight MyGroup2 term=bold,reverse cterm=bold ctermfg=0 ctermbg=10 gui=bold guifg=bg guibg=LightGreen')
+call AddHighlight('highlight MyGroup3 ctermbg=darkgreen guibg=darkgreen')
+call AddHighlight('highlight MyGroup4 term=reverse ctermfg=0 ctermbg=14 gui=reverse guifg=#eee8d5 guibg=#073642')
+call AddHighlight('highlight MyGroup5 term=reverse gui=reverse guifg=#586e75')
+call AddHighlight('highlight MyGroup6 term=bold gui=bold guifg=#93a1a1 guibg=#002b36')
+call AddHighlight('highlight MyGroup7 term=standout gui=standout guifg=#6c71c4')
+call AddHighlight('highlight MyGroup8 term=bold cterm=bold ctermfg=241 ctermbg=136 gui=bold guifg=#657b83 guibg=#b58900')
+call AddHighlight('highlight MyGroup9 term=bold ctermfg=14 gui=bold,underline guifg=Yellow')
 
 function! MatchTextToPattern(text)
   if match(a:text, "\\n") != -1
@@ -508,8 +562,8 @@ function! s:get_visual_selection()
     normal! ygv
     return @"
   finally
-    call setreg('"', l:quot_save, l:quot_save_type)
     call setreg("0", l:zero_save, l:zero_save_type)
+    call setreg('"', l:quot_save, l:quot_save_type)
     call winrestview(l:winview)
   endtry
 
@@ -564,9 +618,13 @@ augroup HIGHLIGHT_CURRENT
 augroup END
 function! HighlightCurrentTimer(id)
   let b:highlight_old_mode = get(b:, 'highlight_old_mode', '')
-  if b:highlight_old_mode !=# mode()
+  let b:visual_start = get(b:, 'visual_start', [0,0,0,0])
+  let b:visual_end = get(b:, 'visual_end', [0,0,0,0])
+  if b:highlight_old_mode !=# mode() || b:visual_start != getpos("'<'") || b:visual_end != getpos("'>'")
     silent call HighlightCurrent()
     let b:highlight_old_mode = mode()
+    let b:visual_start = getpos("'<'")
+    let b:visual_end = getpos("'>'")
   endif
 endfunction
 if get(g:, 'highlight_timer_id', 0)
@@ -745,15 +803,24 @@ vnoremap <silent> <leader>cF :<c-u>let @/='\V\^\(<<<<<<< \\|=======\$\\|>>>>>>> 
 nmap <silent> <leader>u vaC<leader>cu
 
 " Yank last message to the buffer
-nnoremap  <leader>ym :let @"=""<cr>:redir @"<cr>:1message<cr>:redir END<cr>:let @"=substitute(@", '\V\^\n\+', '', '')<cr>
-nmap  <leader>pm <leader>myp
+nnoremap <silent> <leader>ym :let @"=""<cr>:redir @"<cr>:1message<cr>:redir END<cr>:let @"=substitute(@", '\v^\_s+\|\_s+$', '', 'g') \| call setreg('"', @", 'v')<cr>
+nmap <silent> <leader>pm <leader>ymp
+nmap <silent> <leader>pMc <leader>ym:let @"=substitute(@", '\v^([0-9]+)\s.*', '\1', '')<cr>p
 
 " XML mappings
 augroup XMLmappings
   autocmd!
-  autocmd FileType ant nnoremap <leader>xc a</<c-x><c-o><esc>
-  autocmd FileType xml nnoremap <leader>xc a</<c-x><c-o><esc>
+  autocmd FileType ant nnoremap <leader>xC a</<c-x><c-o><esc>
+  autocmd FileType xml nnoremap <leader>xC a</<c-x><c-o><esc>
+  autocmd FileType ant nnoremap <leader>xc o<esc>a</<c-x><c-o><esc>
+  autocmd FileType xml nnoremap <leader>xc o<esc>a</<c-x><c-o><esc>
+  autocmd FileType xhtml set ft=xml
+
+  " Wrap attibutes of a tag
+  autocmd FileType xml nmap <silent> <leader>xwa :set lazyredraw\|let s=@/\|let p=getpos('.')<CR>:.s/\V \+\(\/\?>\)\s\*\$/\1/e<CR>:.s/\v(^\s*\S([^"]\|"[^"]*")*)@<=\s+/\r/ge<CR>:let @/=s<CR>gV=:call setpos('.',p)<CR>==:call setpos('.',p)\|set nolazyredraw<CR>
 augroup END
+
+
 
 " Sum matches
 function! SumNumbers(...) range
@@ -782,7 +849,7 @@ set iminsert=0
 
 " Colors
 
-hi String guifg=#727272
+call AddHighlight('hi String guifg=#727272')
 
 " FromSlowNetwork
 
@@ -857,13 +924,14 @@ augroup VIM_AUTOEXEC
   autocmd BufWritePre * call VimAutoExec()
 augroup END
 
+call SetHighlight()
 
 if !empty(glob("$HOME/.vimrc_local-after"))
    source $HOME/.vimrc_local-after
 endif
 
 " let
-" @i='?<<<<<<<V/|||||||"aynV/======="bynV/>>>>>>>"cy:tabnew:vsplit:vsplit"apl:enew"bpl:enew"cp:diffthish:diffthish:diffthis:g/<<<<<\||||||\|=====\|>>>>>/dl:g//dl:g//d'
+" @i='?<<<<<<<V/|||||||"aynV/======="bynV/>>>>>>>"cy:tabnew:vsplit:vsplit"apl:enew"bpl:enew"cp:diffthish:diffthish:diffthis:g/<<<<<\||||||\|=====\|>>>>>/dl:g//dl:g//d'
 
 
 " vim: set ts=2 sts=2 sw=2 expandtab:
